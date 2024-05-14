@@ -6,6 +6,7 @@ const trainerController = require('../controllers/trainer-controller')
 const lessonController = require('../controllers/lesson-controller')
 const commentController = require('../controllers/comment-controller')
 const searchController = require('../controllers/search-controller')
+const { errorHandler } = require('../middleware/error-handler')
 
 router.use('/admin', admin)
 
@@ -36,6 +37,6 @@ router.get('/', (req, res) => {
   res.send('workout booking app!')
 })
 
-// router.use('/', apiErrorHandler)
+router.use('/', errorHandler)
 
 module.exports = router
