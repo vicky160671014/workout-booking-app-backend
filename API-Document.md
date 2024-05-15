@@ -41,3 +41,44 @@ Failure Response | code : 500
     "message": "Error: Passwords do not match!"
 }
 ```
+## POST /api/signin (user signin)  
+user sign in.  
+### Request Body  
+| Params | Required | Type | Description |
+| --- | --- | --- | --- |
+| email | Required | string | User email |
+| password | Required | string | User password |  
+
+### Response 
+Success | code : 200  
+```json
+{
+    "status": "success",
+    "data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImJvYiIsImVtYWlsIjoicm9vdEBleGFtcGxlLmNvbSIsImltYWdlIjpudWxsLCJpbnRyb2R1Y3Rpb24iOm51bGwsImNyZWF0ZWRBdCI6IjIwMjQtMDUtMTVUMDc6MTI6NDguMDAwWiIsInVwZGF0ZWRBdCI6IjIwMjQtMDUtMTVUMDc6MTI6NDguMDAwWiIsImlhdCI6MTcxNTc4MjYzNCwiZXhwIjoxNzE4Mzc0NjM0fQ.t9YsUMwBmNGF1yCfqPuDRGM0UBw4rUU22Ouiaij4MYw",
+        "user": {
+            "id": 1,
+            "name": "bob",
+            "email": "root@example.com",
+            "image": null,
+            "introduction": null,
+            "createdAt": "2024-05-15T07:12:48.000Z",
+            "updatedAt": "2024-05-15T07:12:48.000Z"
+        }
+    }
+}
+```
+Failure Response | code : 500  
+```json
+{
+    "status": "error",
+    "message": "Error: Email or password wrong!"
+}
+```
+Failure Response | code : 500  
+```json
+{
+    "status": "error",
+    "message": "Error: Have not registered"
+}
+```

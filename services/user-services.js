@@ -1,5 +1,6 @@
 // Services 負責商業邏輯運算
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 const db = require('../models')
 const { User } = db
 
@@ -23,7 +24,16 @@ const userServices = {
       cb(error)
     }
   },
-  signIn: (req, cb) => {}
+  signIn: (req, cb) => {
+    try {
+      const userData = req.user.toJSON()
+      delete userData.password // 移除敏感資料
+      const token = jwt.sign(userData, process.env.JWT_SECRET, { expiresIn: '30d' })
+      cb(null, { token, user: userData })
+    } catch (error) {
+      cb(error)
+    }
+  }
 }
 
 module.exports = userServices

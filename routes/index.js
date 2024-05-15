@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const passport = require('../config/passport')
 const admin = require('./modules/admin')
 const userController = require('../controllers/user-controller')
 const trainerController = require('../controllers/trainer-controller')
@@ -12,7 +13,7 @@ router.use('/admin', admin)
 
 // user
 router.post('/signup', userController.signUp)
-router.post('/signin', userController.signIn)
+router.post('/signin', passport.authenticate('local', { session: false }), userController.signIn)
 // router.get('/users/:userId', userController.getUser)
 // router.put('/users/:userId', userController.putUser)
 
