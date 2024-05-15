@@ -16,7 +16,9 @@ const userServices = {
       const hash = await bcrypt.hash(password, 10)
 
       const newUser = await User.create({ name, email, password: hash })
-      cb(null, { user: newUser })
+      const newUserToJSON = newUser.toJSON()
+      delete newUserToJSON.password
+      cb(null, { user: newUserToJSON })
     } catch (error) {
       cb(error)
     }
