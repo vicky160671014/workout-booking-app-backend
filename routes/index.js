@@ -14,7 +14,7 @@ router.use('/admin', admin)
 // user
 router.post('/signup', userController.signUp)
 router.post('/signin', passport.authenticate('local', { session: false }), userController.signIn)
-// router.get('/users/:userId', userController.getUser)
+router.get('/users/:userId', userController.getUser)
 // router.put('/users/:userId', userController.putUser)
 
 // trainer
