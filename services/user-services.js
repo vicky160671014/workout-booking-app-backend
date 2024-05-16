@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const db = require('../models')
 const { User } = db
+const { localFileHandler } = require('../helpers/file-helpers')
 
 const userServices = {
   signUp: async (req, cb) => {
@@ -41,6 +42,26 @@ const userServices = {
       if (!user) throw new Error("User didn't exist!")
       delete user.password
       cb(null, { user })
+    } catch (error) {
+      cb(error)
+    }
+  },
+  putUser: async (req, cb) => {
+    const userId = req.user.id
+    const { name, introduction } = req.body
+    const { file } = req
+    try {
+      if (!name) throw new Error('User name is required!')
+      if (Number(userId) !== Number(req.params.userId)) throw new Error('Error, you can only modify your own information')
+      const [user, filePath] = await Promise.all([User.findByPk(userId), localFileHandler(file)])
+      if (!user) throw new Error("User didn't exist!")
+
+      const updatedUser = user.update({
+        name: name || user.name,
+        image: filePath || user.image,
+        introduction: introduction || user.introduction
+      })
+      cb(null, { user: updatedUser })
     } catch (error) {
       cb(error)
     }

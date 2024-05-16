@@ -85,6 +85,7 @@ Failure Response | code : 500
 
 ## GET /api/users/:userId (user info)  
 get user info  
+  
 (authentication is required)
 
 ### Path Variables  
@@ -100,12 +101,12 @@ Success | code : 200
     "data": {
         "user": {
             "id": 1,
-            "name": "bob",
+            "name": "AOA",
             "email": "root@example.com",
-            "image": null,
-            "introduction": null,
+            "image": "/upload/104506_81750082.jpg",
+            "introduction": "hlihwqlihlhdlnlaksjasdlsakjdklj",
             "createdAt": "2024-05-15T07:12:48.000Z",
-            "updatedAt": "2024-05-15T07:12:48.000Z"
+            "updatedAt": "2024-05-16T13:48:58.000Z"
         }
     }
 }
@@ -115,6 +116,52 @@ Failure Response | code : 401
 {
     "status": "error",
     "message": "unauthorized"
+}
+```
+Failure Response | code : 500  
+```json
+{
+    "status": "error",
+    "message": "User didn't exist!"
+}
+```
+
+## PUT /api/users/:userId (update user info)  
+update user info  
+  
+(authentication is required)
+### Path Variables  
+| Params | Required | Type | Description |
+| --- | --- | --- | --- |
+| userId | Required | int | user id |
+### Request Body  
+| Params | Required | Type | Description |
+| --- | --- | --- | --- |
+| name | Required | string | User name |
+| introduction |   | string | User password |
+| image |   | file | User name |
+### Response 
+Success | code : 200  
+```json
+{
+    "status": "success",
+    "data": {
+        "user": {}
+    }
+}
+```
+Failure Response | code : 500  
+```json
+{
+    "status": "error",
+    "message": "User name is required!"
+}
+```
+Failure Response | code : 500  
+```json
+{
+    "status": "error",
+    "message": "Error, you can only modify your own information"
 }
 ```
 Failure Response | code : 500  

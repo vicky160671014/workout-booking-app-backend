@@ -9,6 +9,7 @@ const commentController = require('../controllers/comment-controller')
 const searchController = require('../controllers/search-controller')
 const { authenticated } = require('../middleware/auth')
 const { errorHandler } = require('../middleware/error-handler')
+const upload = require('../middleware/multer')
 
 router.use('/admin', admin)
 
@@ -16,7 +17,7 @@ router.use('/admin', admin)
 router.post('/signup', userController.signUp)
 router.post('/signin', passport.authenticate('local', { session: false }), userController.signIn)
 router.get('/users/:userId', authenticated, userController.getUser)
-// router.put('/users/:userId', userController.putUser)
+router.put('/users/:userId', authenticated, upload.single('image'), userController.putUser)
 
 // trainer
 router.post('/trainers/create', trainerController.postTrainer)
