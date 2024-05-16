@@ -7,6 +7,7 @@ const trainerController = require('../controllers/trainer-controller')
 const lessonController = require('../controllers/lesson-controller')
 const commentController = require('../controllers/comment-controller')
 const searchController = require('../controllers/search-controller')
+const { authenticated } = require('../middleware/auth')
 const { errorHandler } = require('../middleware/error-handler')
 
 router.use('/admin', admin)
@@ -14,7 +15,7 @@ router.use('/admin', admin)
 // user
 router.post('/signup', userController.signUp)
 router.post('/signin', passport.authenticate('local', { session: false }), userController.signIn)
-router.get('/users/:userId', userController.getUser)
+router.get('/users/:userId', authenticated, userController.getUser)
 // router.put('/users/:userId', userController.putUser)
 
 // trainer

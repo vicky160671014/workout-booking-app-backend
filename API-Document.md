@@ -82,3 +82,45 @@ Failure Response | code : 500
     "message": "Error: Have not registered"
 }
 ```
+
+## GET /api/users/:userId (user info)  
+get user info  
+(authentication is required)
+
+### Path Variables  
+| Params | Required | Type | Description |
+| --- | --- | --- | --- |
+| userId | Required | int | user id |
+
+### Response 
+Success | code : 200  
+```json
+{
+    "status": "success",
+    "data": {
+        "user": {
+            "id": 1,
+            "name": "bob",
+            "email": "root@example.com",
+            "image": null,
+            "introduction": null,
+            "createdAt": "2024-05-15T07:12:48.000Z",
+            "updatedAt": "2024-05-15T07:12:48.000Z"
+        }
+    }
+}
+```
+Failure Response | code : 401  
+```json
+{
+    "status": "error",
+    "message": "unauthorized"
+}
+```
+Failure Response | code : 500  
+```json
+{
+    "status": "error",
+    "message": "User didn't exist!"
+}
+```

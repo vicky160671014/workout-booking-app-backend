@@ -36,7 +36,7 @@ const userServices = {
   },
   getUser: async (req, cb) => {
     try {
-      const userId = req.params.userId
+      const userId = req.user.id
       const user = await User.findByPk(userId, { raw: true })
       if (!user) throw new Error("User didn't exist!")
       delete user.password
