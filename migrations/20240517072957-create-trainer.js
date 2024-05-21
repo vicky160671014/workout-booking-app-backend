@@ -17,10 +17,10 @@ module.exports = {
       introduction: {
         type: Sequelize.TEXT
       },
-      teachingStyle: {
+      teaching_style: {
         type: Sequelize.TEXT
       },
-      duringTime: {
+      during_time: {
         type: Sequelize.STRING
       },
       location: {

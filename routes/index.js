@@ -20,7 +20,7 @@ router.get('/users/:userId', authenticated, userController.getUser)
 router.put('/users/:userId', authenticated, upload.single('image'), userController.putUser)
 
 // trainer
-router.post('/trainers/create', trainerController.postTrainer)
+router.post('/trainers/create', authenticated, trainerController.postTrainer)
 // router.get('/trainers/:trainerId', trainerController.getTrainer)
 // router.put('/trainers/:trainerId', trainerController.putTrainer)
 
