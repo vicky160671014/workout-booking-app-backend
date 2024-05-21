@@ -22,7 +22,7 @@ router.put('/users/:userId', authenticated, upload.single('image'), userControll
 // trainer
 router.post('/trainers/create', authenticated, trainerController.postTrainer)
 // router.get('/trainers/:trainerId', trainerController.getTrainer)
-// router.put('/trainers/:trainerId', trainerController.putTrainer)
+router.put('/trainers/:trainerId', authenticated, upload.single('image'), trainerController.putTrainer)
 
 // lesson
 router.get('/lessons/search', searchController.getLessons)

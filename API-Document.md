@@ -139,7 +139,7 @@ update user info
 | --- | --- | --- | --- |
 | name | Required | string | User name |
 | introduction |   | string | User password |
-| image |   | file | User name |
+| image |   | file | User image |
 ### Response 
 Success | code : 200  
 ```json
@@ -171,7 +171,7 @@ Failure Response | code : 500
     "message": "User didn't exist!"
 }
 ```
-## POST /api/trainer/create (apply to be trainer)  
+## POST /api/trainers/create (apply to be trainer)  
 apply to be trainer  
   
 (authentication is required)
@@ -235,5 +235,55 @@ Failure Response | code : 500
 {
     "status": "error",
     "message": "Error: User didn't exist!"
+}
+```
+## PUT /api/trainers/:trainerId (modify trainer information)  
+modify trainer's own information  
+  
+(authentication is required)
+### Path Variables  
+| Params | Required | Type | Description |
+| --- | --- | --- | --- |
+| trainerId | Required | int | trainer id |
+### Request Body  
+| Params | Required | Type | Description |
+| --- | --- | --- | --- |
+| name | | string | trainer name |
+| introduction | | text | trainer introduction |
+| teachingStyle | | text | teaching style |
+| duringTime | | string | can only fill in 30 or 60 |
+| location | | string | enter the actual teaching address |
+| appointment | | json | enter the time (week) when lessons are available. Use an array [1,2,3,4,5,6,7] to represent Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday respectively. |
+| image | | file | trainer image |
+### Response 
+Success | code : 200  
+```json
+{
+    "status": "success",
+    "data": {
+        "trainer": {
+            "id": 1,
+            "name": "vicky pilates",
+            "image": "/upload/FB_IMG_1475851963380.jpg",
+            "introduction": "STOTT PILATES Rehab is a full-body, systemic approach to post-rehab exercise using small props and a wide variety of space-saving equipment",
+            "teachingStyle": "Matwork & Matwork with Small Equipment",
+            "duringTime": "60",
+            "location": "new taipei",
+            "appointment": [
+                2,
+                4
+            ],
+            "userId": 1,
+            "createdAt": "2024-05-21T08:09:32.000Z",
+            "updatedAt": "2024-05-21T12:44:52.184Z"
+        }
+    }
+}
+```
+Failure Response | code : 500
+```json
+{
+    "status": "error",
+    "message": "Error: Trainer didn't exist!"
 }
 ```

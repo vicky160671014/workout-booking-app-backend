@@ -1,6 +1,7 @@
 // Services 負責商業邏輯運算
 const db = require('../models')
 const { Trainer } = db
+const { localFileHandler } = require('../helpers/file-helpers')
 const trainerServices = {
   postTrainer: async (req, cb) => {
     const userId = req.user.id
@@ -21,7 +22,33 @@ const trainerServices = {
     } catch (error) {
       cb(error)
     }
-  }
+  },
+  putTrainer: async (req, cb) => {
+    const userId = req.user.id
+    const { name, introduction, teachingStyle, duringTime, location, appointment } = req.body
+    const { file } = req
+    try {
+      const trainer = await Trainer.findOne({ where: { userId } })
+      if (!trainer) throw new Error("Trainer didn't exist!")
+
+      const filePath = await localFileHandler(file)
+
+      const updatedTrainer = await trainer.update({
+        name: name || trainer.name,
+        introduction: introduction || trainer.introduction,
+        teachingStyle: teachingStyle || trainer.teachingStyle,
+        duringTime: duringTime || trainer.duringTime,
+        location: location || trainer.location,
+        appointment: appointment || trainer.appointment,
+        image: filePath || trainer.image
+      })
+
+      cb(null, { trainer: updatedTrainer })
+    } catch (error) {
+      cb(error)
+    }
+  },
+  getTrainer: async (req, cb) => {}
 }
 
 module.exports = trainerServices
