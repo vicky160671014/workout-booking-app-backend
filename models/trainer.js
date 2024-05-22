@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate (models) {
       Trainer.belongsTo(models.User, { foreignKey: 'userId', as: 'isUser' })
+      Trainer.hasMany(models.Record, { foreignKey: 'trainerId' })
     }
   };
   Trainer.init({
