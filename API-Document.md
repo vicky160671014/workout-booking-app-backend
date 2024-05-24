@@ -183,7 +183,7 @@ apply to be trainer
 | teachingStyle | Required | text | teaching style |
 | duringTime | Required | string | can only fill in 30 or 60 |
 | location | Required | string | enter the actual teaching address |
-| appointment | Required | json | enter the time (week) when lessons are available. Use an array [1,2,3,4,5,6,7] to represent Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday respectively. |
+| appointment | Required | json | enter the time (week) when lessons are available. Use an array [1,2,3,4,5,6,0] to represent Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday(0) respectively. |
 ### Response 
 Success | code : 200  
 ```json
@@ -237,6 +237,13 @@ Failure Response | code : 500
     "message": "Error: User didn't exist!"
 }
 ```
+Failure Response | code : 500
+```json
+{
+    "status": "error",
+    "message": "Error: Appointment is wrong format."
+}
+```
 ## PUT /api/trainers/:trainerId (modify trainer information)  
 modify trainer's own information  
   
@@ -253,7 +260,7 @@ modify trainer's own information
 | teachingStyle | | text | teaching style |
 | duringTime | | string | can only fill in 30 or 60 |
 | location | | string | enter the actual teaching address |
-| appointment | | json | enter the time (week) when lessons are available. Use an array [1,2,3,4,5,6,7] to represent Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday respectively. |
+| appointment | | json | enter the time (week) when lessons are available. Use an array [1,2,3,4,5,6,0] to represent Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday(0) respectively. |
 | image | | file | trainer image |
 ### Response 
 Success | code : 200  
@@ -285,6 +292,13 @@ Failure Response | code : 500
 {
     "status": "error",
     "message": "Error: Trainer didn't exist!"
+}
+```
+Failure Response | code : 500
+```json
+{
+    "status": "error",
+    "message": "Error: Appointment is wrong format."
 }
 ```
 ## POST /api/records (user make an appointment)  

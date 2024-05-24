@@ -2,6 +2,7 @@
 const db = require('../models')
 const { Trainer } = db
 const { localFileHandler } = require('../helpers/file-helpers')
+const timeTool = require('../helpers/time-helpers')
 const trainerServices = {
   postTrainer: async (req, cb) => {
     const userId = req.user.id
@@ -11,6 +12,7 @@ const trainerServices = {
       if (!userId) throw new Error("User didn't exist!")
       if (!name || !introduction || !teachingStyle || !duringTime || !location || !appointment) throw new Error('All fields are required')
       if (parseInt(duringTime) !== 30 && parseInt(duringTime) !== 60) throw new Error('You can only fill in 30 minutes or 60 minutes')
+      if (timeTool.weekdayFormatCheck(appointment)) throw new Error('Appointment is wrong format.')
 
       const user = await Trainer.findOne({ where: { userId } })
       if (user) throw new Error('Already have a trainer status!')
@@ -28,6 +30,7 @@ const trainerServices = {
     const { name, introduction, teachingStyle, duringTime, location, appointment } = req.body
     const { file } = req
     try {
+      if (timeTool.weekdayFormatCheck(appointment)) throw new Error('Appointment is wrong format.')
       const trainer = await Trainer.findOne({ where: { userId } })
       if (!trainer) throw new Error("Trainer didn't exist!")
 

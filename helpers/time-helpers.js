@@ -33,6 +33,13 @@ const timeTool = {
       if (dayjs(startTime).isSame(record.startTime) || dayjs(endTime).isSame(record.endTime) || (dayjs(startTime).isAfter(record.startTime) && dayjs(startTime).isBefore(record.endTime))) return true
     }
     return false
+  },
+  weekdayFormatCheck: appointment => {
+    const weekDay = [1, 2, 3, 4, 5, 6, 0]
+    for (const x of appointment) {
+      if (!weekDay.includes(x)) return true
+    }
+    return false
   }
 }
 
