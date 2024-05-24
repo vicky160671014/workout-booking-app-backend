@@ -287,3 +287,64 @@ Failure Response | code : 500
     "message": "Error: Trainer didn't exist!"
 }
 ```
+## POST /api/records (user make an appointment)  
+user make an appointment  
+  
+(authentication is required)  
+### Request Body  
+| Params | Required | Type | Description |
+| --- | --- | --- | --- |
+| trainerId | Required | string | trainer's ID |
+| appointment | Required | string | Submit start time.For example, if user want to make an appointment "2024-5-21 20:00:00" to "2024-5-21 21:00:00", please submit "2024-5-21 20:00:00."|
+```json
+{
+    "trainerId": "2",
+    "appointment":"2024-5-21 20:00:00"
+}
+```
+### Response 
+Success | code : 200  
+```json
+{
+    "status": "success",
+    "data": {
+        "record": {
+            "id": 18,
+            "startTime": "2024-05-22 18:00",
+            "duringTime": "30",
+            "userId": 1,
+            "trainerId": 3,
+            "updatedAt": "2024-05-24T07:35:57.992Z",
+            "createdAt": "2024-05-24T07:35:57.992Z"
+        }
+    }
+}
+```
+Failure Response | code : 500
+```json
+{
+    "status": "error",
+    "message": "Error: Not open during this week day"
+}
+```
+Failure Response | code : 500
+```json
+{
+    "status": "error",
+    "message": "Error: Unable to book a trainer's own lesson"
+}
+```
+Failure Response | code : 500
+```json
+{
+    "status": "error",
+    "message": "Error: User appointments overlap"
+}
+```
+Failure Response | code : 500
+```json
+{
+    "status": "error",
+    "message": "Error: This time slot has been reserved"
+}
+```

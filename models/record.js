@@ -16,10 +16,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Record.init({
-    start_time: DataTypes.STRING,
-    during_time: DataTypes.STRING,
-    user_id: DataTypes.INTEGER,
-    trainer_id: DataTypes.INTEGER
+    startTime: DataTypes.STRING,
+    duringTime: DataTypes.STRING,
+    userId: DataTypes.INTEGER,
+    trainerId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Record',

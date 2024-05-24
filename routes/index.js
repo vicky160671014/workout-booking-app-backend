@@ -31,7 +31,7 @@ router.get('/lessons', lessonController.getLessons)
 
 // record
 // router.delete('/records/:recordId', lessonController.deleteAppointment)
-// router.post('/records', lessonController.postAppointment)
+router.post('/records', authenticated, lessonController.postAppointment)
 
 // comment
 router.post('/comments', commentController.postCommentScore)
