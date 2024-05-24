@@ -30,7 +30,7 @@ router.get('/lessons/search', searchController.getLessons)
 router.get('/lessons', lessonController.getLessons)
 
 // record
-// router.delete('/records/:recordId', lessonController.deleteAppointment)
+router.delete('/records/:recordId', authenticated, lessonController.deleteAppointment)
 router.post('/records', authenticated, lessonController.postAppointment)
 
 // comment

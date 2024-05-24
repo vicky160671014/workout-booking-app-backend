@@ -37,6 +37,20 @@ const lessonServices = {
     } catch (error) {
       cb(error)
     }
+  },
+  deleteAppointment: async (req, cb) => {
+    const userId = req.user.id
+    const { recordId } = req.params
+    try {
+      const record = await Record.findByPk(recordId)
+      if (!record) throw new Error("Record didn't exist!")
+      if (record.userId !== userId) throw new Error("Unable to delete other user's record!")
+
+      const deleteRecord = await record.destroy()
+      cb(null, { deleteRecord })
+    } catch (error) {
+      cb(error)
+    }
   }
 }
 

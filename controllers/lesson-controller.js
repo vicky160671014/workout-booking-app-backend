@@ -7,6 +7,9 @@ const lessonController = {
   },
   postAppointment: (req, res, next) => {
     lessonServices.postAppointment(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+  },
+  deleteAppointment: (req, res, next) => {
+    lessonServices.deleteAppointment(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
   }
 }
 

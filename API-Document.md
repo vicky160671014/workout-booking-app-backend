@@ -362,3 +362,43 @@ Failure Response | code : 500
     "message": "Error: This time slot has been reserved"
 }
 ```
+## DELETE /api/records/:recordId (cancel appointment)  
+user can cancel the appointment  
+  
+(authentication is required)
+### Path Variables  
+| Params | Required | Type | Description |
+| --- | --- | --- | --- |
+| recordId | Required | int | record id |
+### Response 
+Success | code : 200  
+```json
+{
+    "status": "success",
+    "data": {
+        "deleteRecord": {
+            "id": 22,
+            "startTime": "2024-05-21 20:00",
+            "duringTime": "60",
+            "userId": 1,
+            "trainerId": 2,
+            "createdAt": "2024-05-24T07:39:02.000Z",
+            "updatedAt": "2024-05-24T07:39:02.000Z"
+        }
+    }
+}
+```
+Failure Response | code : 500
+```json
+{
+    "status": "error",
+    "message": "Error: Unable to delete other user's record!"
+}
+```
+Failure Response | code : 500
+```json
+{
+    "status": "error",
+    "message": "Error: Record didn't exist!"
+}
+```
