@@ -34,7 +34,7 @@ router.delete('/records/:recordId', authenticated, lessonController.deleteAppoin
 router.post('/records', authenticated, lessonController.postAppointment)
 
 // comment
-router.post('/comments', commentController.postCommentScore)
+router.post('/comments', authenticated, commentController.postCommentScore)
 
 router.get('/', (req, res) => {
   res.send('workout booking app!')

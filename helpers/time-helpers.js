@@ -1,7 +1,11 @@
 const dayjs = require('dayjs')
 const customParseFormat = require('dayjs/plugin/customParseFormat')
+const utc = require('dayjs/plugin/utc')
+const timezone = require('dayjs/plugin/timezone')
 
 dayjs.extend(customParseFormat)
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const timeTool = {
   appointmentFormat: appointment => {
@@ -40,6 +44,9 @@ const timeTool = {
       if (!weekDay.includes(x)) return true
     }
     return false
+  },
+  currentTaipeiTime: () => {
+    return dayjs().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm')
   }
 }
 

@@ -402,3 +402,59 @@ Failure Response | code : 500
     "message": "Error: Record didn't exist!"
 }
 ```
+## POST /api/comments (comment)  
+user can score and leave a comment about the trainer 
+  
+(authentication is required)
+### Request Body  
+| Params | Required | Type | Description |
+| --- | --- | --- | --- |
+| trainerId | Required | string | trainer's ID |
+| scores | Required | int | enter a rating of 1-5 points|
+| text | Required | text | write a comment for trainer|
+```json
+{
+    "trainerId":"2",
+    "scores":"5",
+    "text":"great!"
+}
+```
+### Response 
+Success | code : 200  
+```json
+{
+    "status": "success",
+    "data": {
+        "comment": {
+            "id": 1,
+            "scores": "5",
+            "text": "great!",
+            "userId": 1,
+            "trainerId": "2",
+            "updatedAt": "2024-05-27T08:44:55.085Z",
+            "createdAt": "2024-05-27T08:44:55.085Z"
+        }
+    }
+}
+```
+Failure Response | code : 500
+```json
+{
+    "status": "error",
+    "message": "Error: User has no record of this trainer"
+}
+```
+Failure Response | code : 500
+```json
+{
+    "status": "error",
+    "message": "Error: All fields are required"
+}
+```
+Failure Response | code : 500
+```json
+{
+    "status": "error",
+    "message": "Error: Please fill in the score from 1 to 5 points"
+}
+```
