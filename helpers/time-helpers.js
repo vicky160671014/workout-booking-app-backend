@@ -47,6 +47,27 @@ const timeTool = {
   },
   currentTaipeiTime: () => {
     return dayjs().tz('Asia/Taipei').format('YYYY-MM-DD HH:mm')
+  },
+  openLessonTime: (appointment, duringTime) => {
+    // input輸入trainer的可預約星期幾(appointment)及課程時長(duringTime)，output為列出兩周內可預約的時間
+    let newDay = dayjs()
+    const afterTwoWeeks = newDay.add(14, 'day')
+    const startTime = '18:00'
+    const endTime = '21:30'
+    const newAppointmentStartTime = []
+
+    while (newDay.isBefore(afterTwoWeeks)) {
+      newDay = newDay.add(1, 'day')
+      if (appointment.map(x => parseInt(x)).includes(newDay.day())) {
+        let currentTime = dayjs(`${newDay.format('YYYY-MM-DD')} ${startTime}`)
+        const endingTime = dayjs(`${newDay.format('YYYY-MM-DD')} ${endTime}`)
+        while (currentTime.isBefore(endingTime)) {
+          newAppointmentStartTime.push(currentTime.format('YYYY-MM-DD HH:mm'))
+          currentTime = currentTime.add(parseInt(duringTime), 'minute')
+        }
+      }
+    }
+    return newAppointmentStartTime
   }
 }
 
