@@ -301,6 +301,230 @@ Failure Response | code : 500
     "message": "Error: Appointment is wrong format."
 }
 ```
+## GET /api/trainers/:trainerId (trainer info) 
+get the trainer's own information including:  
+- trainer's basic information
+- all records about the trainer
+- records in future(7 days after today)
+- all comments about the trainer
+- average comment score  
+  
+(authentication is required)
+### Path Variables  
+| Params | Required | Type | Description |
+| --- | --- | --- | --- |
+| trainerId | Required | int | trainer id |
+### Response 
+Success | code : 200  
+```json
+{
+    "status": "success",
+    "data": {
+        "trainer": {
+            "id": 24,
+            "name": "Jonathon Robel",
+            "image": "https://loremflickr.com/150/150/human/?random=44.744889667154794",
+            "introduction": "sit",
+            "teachingStyle": "Mollitia et quia id doloremque aut consequuntur et sit dolores. Provident sed et alias soluta suscipit mollitia sit quo. Quis et asperiores. Velit sapiente enim.\n \rQuas amet est beatae distinctio magnam vel veritatis praesentium in. Sed numquam cupiditate vero quod exercitationem expedita. Est illo perferendis qui quidem vel.\n \rCulpa et suscipit est et doloremque rerum. Sed consequatur sed. Exercitationem necessitatibus temporibus. Provident beatae voluptates minus ut molestiae.",
+            "duringTime": "30",
+            "location": "834 Dooley Run",
+            "appointment": [
+                1,
+                3,
+                5
+            ],
+            "userId": 37,
+            "createdAt": "2024-06-06T08:14:28.000Z",
+            "updatedAt": "2024-06-06T08:14:28.000Z"
+        },
+        "allRecords": [
+            {
+                "id": 470,
+                "startTime": "2023-12-22 18:30",
+                "duringTime": "30",
+                "userId": 59,
+                "trainerId": 24,
+                "createdAt": "2024-06-06T08:14:28.000Z",
+                "updatedAt": "2024-06-06T08:14:28.000Z"
+            },
+            {
+                "id": 468,
+                "startTime": "2023-12-29 18:30",
+                "duringTime": "30",
+                "userId": 58,
+                "trainerId": 24,
+                "createdAt": "2024-06-06T08:14:28.000Z",
+                "updatedAt": "2024-06-06T08:14:28.000Z"
+            },
+            {
+                "id": 463,
+                "startTime": "2024-01-12 18:00",
+                "duringTime": "30",
+                "userId": 56,
+                "trainerId": 24,
+                "createdAt": "2024-06-06T08:14:28.000Z",
+                "updatedAt": "2024-06-06T08:14:28.000Z"
+            },
+            {
+                "id": 385,
+                "startTime": "2024-05-30 18:00",
+                "duringTime": "30",
+                "userId": 62,
+                "trainerId": 24,
+                "createdAt": "2024-06-06T08:14:28.000Z",
+                "updatedAt": "2024-06-06T08:14:28.000Z"
+            },
+            {
+                "id": 386,
+                "startTime": "2024-05-30 18:30",
+                "duringTime": "30",
+                "userId": 40,
+                "trainerId": 24,
+                "createdAt": "2024-06-06T08:14:28.000Z",
+                "updatedAt": "2024-06-06T08:14:28.000Z"
+            },
+            {
+                "id": 325,
+                "startTime": "2024-06-07 18:30",
+                "duringTime": "30",
+                "userId": 42,
+                "trainerId": 24,
+                "createdAt": "2024-06-06T08:14:28.000Z",
+                "updatedAt": "2024-06-06T08:14:28.000Z"
+            },
+            {
+                "id": 326,
+                "startTime": "2024-06-07 19:00",
+                "duringTime": "30",
+                "userId": 43,
+                "trainerId": 24,
+                "createdAt": "2024-06-06T08:14:28.000Z",
+                "updatedAt": "2024-06-06T08:14:28.000Z"
+            },
+            {
+                "id": 327,
+                "startTime": "2024-06-07 19:30",
+                "duringTime": "30",
+                "userId": 45,
+                "trainerId": 24,
+                "createdAt": "2024-06-06T08:14:28.000Z",
+                "updatedAt": "2024-06-06T08:14:28.000Z"
+            }
+        ],
+        "currentRecordSort": [
+            {
+                "id": 325,
+                "startTime": "2024-06-07 18:30",
+                "duringTime": "30",
+                "userId": 42,
+                "trainerId": 24,
+                "createdAt": "2024-06-06T08:14:28.000Z",
+                "updatedAt": "2024-06-06T08:14:28.000Z",
+                "Trainer": {
+                    "id": 24,
+                    "name": "Jonathon Robel",
+                    "image": "https://loremflickr.com/150/150/human/?random=44.744889667154794",
+                    "introduction": "sit",
+                    "teachingStyle": "Mollitia et quia id doloremque aut consequuntur et sit dolores. Provident sed et alias soluta suscipit mollitia sit quo. Quis et asperiores. Velit sapiente enim.\n \rQuas amet est beatae distinctio magnam vel veritatis praesentium in. Sed numquam cupiditate vero quod exercitationem expedita. Est illo perferendis qui quidem vel.\n \rCulpa et suscipit est et doloremque rerum. Sed consequatur sed. Exercitationem necessitatibus temporibus. Provident beatae voluptates minus ut molestiae.",
+                    "duringTime": "30",
+                    "location": "834 Dooley Run",
+                    "appointment": [
+                        1,
+                        3,
+                        5
+                    ],
+                    "userId": 37,
+                    "createdAt": "2024-06-06T08:14:28.000Z",
+                    "updatedAt": "2024-06-06T08:14:28.000Z"
+                }
+            },
+            {
+                "id": 326,
+                "startTime": "2024-06-07 19:00",
+                "duringTime": "30",
+                "userId": 43,
+                "trainerId": 24,
+                "createdAt": "2024-06-06T08:14:28.000Z",
+                "updatedAt": "2024-06-06T08:14:28.000Z",
+                "Trainer": {
+                    "id": 24,
+                    "name": "Jonathon Robel",
+                    "image": "https://loremflickr.com/150/150/human/?random=44.744889667154794",
+                    "introduction": "sit",
+                    "teachingStyle": "Mollitia et quia id doloremque aut consequuntur et sit dolores. Provident sed et alias soluta suscipit mollitia sit quo. Quis et asperiores. Velit sapiente enim.\n \rQuas amet est beatae distinctio magnam vel veritatis praesentium in. Sed numquam cupiditate vero quod exercitationem expedita. Est illo perferendis qui quidem vel.\n \rCulpa et suscipit est et doloremque rerum. Sed consequatur sed. Exercitationem necessitatibus temporibus. Provident beatae voluptates minus ut molestiae.",
+                    "duringTime": "30",
+                    "location": "834 Dooley Run",
+                    "appointment": [
+                        1,
+                        3,
+                        5
+                    ],
+                    "userId": 37,
+                    "createdAt": "2024-06-06T08:14:28.000Z",
+                    "updatedAt": "2024-06-06T08:14:28.000Z"
+                }
+            },
+            {
+                "id": 327,
+                "startTime": "2024-06-07 19:30",
+                "duringTime": "30",
+                "userId": 45,
+                "trainerId": 24,
+                "createdAt": "2024-06-06T08:14:28.000Z",
+                "updatedAt": "2024-06-06T08:14:28.000Z",
+                "Trainer": {
+                    "id": 24,
+                    "name": "Jonathon Robel",
+                    "image": "https://loremflickr.com/150/150/human/?random=44.744889667154794",
+                    "introduction": "sit",
+                    "teachingStyle": "Mollitia et quia id doloremque aut consequuntur et sit dolores. Provident sed et alias soluta suscipit mollitia sit quo. Quis et asperiores. Velit sapiente enim.\n \rQuas amet est beatae distinctio magnam vel veritatis praesentium in. Sed numquam cupiditate vero quod exercitationem expedita. Est illo perferendis qui quidem vel.\n \rCulpa et suscipit est et doloremque rerum. Sed consequatur sed. Exercitationem necessitatibus temporibus. Provident beatae voluptates minus ut molestiae.",
+                    "duringTime": "30",
+                    "location": "834 Dooley Run",
+                    "appointment": [
+                        1,
+                        3,
+                        5
+                    ],
+                    "userId": 37,
+                    "createdAt": "2024-06-06T08:14:28.000Z",
+                    "updatedAt": "2024-06-06T08:14:28.000Z"
+                }
+            }
+        ],
+        "allComments": [
+            {
+                "id": 50,
+                "scores": 4,
+                "text": "Adipisci cum in veritatis dolorem voluptatem doloremque et nulla. Sed et est natus reiciendis voluptas quis. Architecto et impedit error quaerat quis voluptas eligendi libero. Nemo nobis tempora officiis est non sint voluptatem ut. Dolores nisi ab quod nihil.",
+                "userId": 40,
+                "trainerId": 24,
+                "createdAt": "2024-06-06T08:14:28.000Z",
+                "updatedAt": "2024-06-06T08:14:28.000Z"
+            },
+            {
+                "id": 49,
+                "scores": 2,
+                "text": "voluptate magnam sunt",
+                "userId": 62,
+                "trainerId": 24,
+                "createdAt": "2024-06-06T08:14:28.000Z",
+                "updatedAt": "2024-06-06T08:14:28.000Z"
+            }
+        ],
+        "avgCommentScore": {
+            "avgScores": "3.0"
+        }
+    }
+}
+```
+Failure Response | code : 500
+```json
+{
+    "status": "error",
+    "message": "Error: Trainer didn't exist!"
+}
+```
+
 ## POST /api/records (user make an appointment)  
 user make an appointment  
   

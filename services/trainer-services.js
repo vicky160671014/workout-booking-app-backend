@@ -1,8 +1,11 @@
 // Services 負責商業邏輯運算
 const db = require('../models')
-const { Trainer } = db
+const { Trainer, Record, Comment } = db
 const { localFileHandler } = require('../helpers/file-helpers')
 const timeTool = require('../helpers/time-helpers')
+const { Op, Sequelize } = require('sequelize')
+const dayjs = require('dayjs')
+
 const trainerServices = {
   postTrainer: async (req, cb) => {
     const userId = req.user.id
@@ -51,7 +54,58 @@ const trainerServices = {
       cb(error)
     }
   },
-  getTrainer: async (req, cb) => {}
+  getTrainer: async (req, cb) => {
+    const userId = req.user.id
+    try {
+      const today = timeTool.currentTaipeiTime()
+      const todayAddSevenDays = dayjs(today).add(7, 'day').format('YYYY-MM-DD HH:mm')
+
+      const trainer = await Trainer.findOne({
+        where: { userId },
+        raw: true
+      })
+      if (!trainer) throw new Error("Trainer didn't exist!")
+
+      const trainerId = trainer.id
+      const [allRecords, currentRecords, allComments, avgCommentScore] = await Promise.all([
+        Record.findAll({
+          where: { trainerId },
+          order: [['startTime', 'ASC']],
+          raw: true
+        }),
+        Record.findAll({
+          where: {
+            trainerId,
+            startTime: {
+              [Op.gte]: today,
+              [Op.lte]: todayAddSevenDays
+            }
+          },
+          include: [{ model: Trainer }],
+          raw: true,
+          nest: true
+        }),
+        Comment.findAll({
+          where: { trainerId },
+          order: [['scores', 'DESC']],
+          raw: true
+        }),
+        Comment.findOne({
+          where: { trainerId },
+          attributes: [
+            [Sequelize.fn('AVG', Sequelize.col('scores')), 'avgScores']
+          ],
+          raw: true
+        })
+      ])
+      avgCommentScore.avgScores = parseFloat(avgCommentScore.avgScores).toFixed(1)
+      const currentRecordSort = currentRecords.sort((a, b) => Date.parse(a.startTime) - Date.parse(b.startTime)) // 比較函式<0，a排在b前面
+
+      cb(null, { trainer, allRecords, currentRecordSort, allComments, avgCommentScore })
+    } catch (error) {
+      cb(error)
+    }
+  }
 }
 
 module.exports = trainerServices
