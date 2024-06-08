@@ -682,6 +682,164 @@ Failure Response | code : 500
     "message": "Error: Please fill in the score from 1 to 5 points"
 }
 ```
+## GET /api/lessons (user home page)
+user get home page (index page) including:
+- listed all trainer info  
+- top 10 users lesson time ranking  
+  
+(authentication is required)
+### Query Parameters
+| Params | Required | Type | Description |
+| --- | --- | --- | --- |
+| page |  | int | index page (default: 1) |
+| limit |  | int | number of trainer to show in home page (default: 8) |
+### Response 
+Success | code : 200  
+```json
+{
+    "status": "success",
+    "data": {
+        "trainers": [
+            {
+                "id": 48,
+                "name": "Ashley Hyatt",
+                "image": "https://loremflickr.com/150/150/human/?random=44.205168345610105",
+                "introduction": "Non sit qui mollitia repellat.\nAliquid quae vitae ...",
+                "teachingStyle": "Autem quis et et ducimus. Necessitatibus quidem in...",
+                "duringTime": "30",
+                "location": "77130 Jenkins Field",
+                "appointment": [
+                    1,
+                    3,
+                    5,
+                    0
+                ],
+                "userId": 72,
+                "createdAt": "2024-06-08T06:13:13.000Z",
+                "updatedAt": "2024-06-08T06:13:13.000Z"
+            },
+            {
+                "id": 49,
+                "name": "Doug Collins",
+                "image": "https://loremflickr.com/150/150/human/?random=66.84208334617314",
+                "introduction": "Maiores id ut quisquam....",
+                "teachingStyle": "Molestiae neque ex alias et explicabo perferendis ...",
+                "duringTime": "60",
+                "location": "41166 Cassin Pike",
+                "appointment": [
+                    1,
+                    3,
+                    5,
+                    0
+                ],
+                "userId": 73,
+                "createdAt": "2024-06-08T06:13:13.000Z",
+                "updatedAt": "2024-06-08T06:13:13.000Z"
+            },
+            {
+                "id": 50,
+                "name": "Ronnie Hoeger",
+                "image": "https://loremflickr.com/150/150/human/?random=19.818182384283723",
+                "introduction": "Harum sequi aut. Dolor eum quas expedita culpa qui...",
+                "teachingStyle": "impedit...",
+                "duringTime": "60",
+                "location": "3332 Travon Square",
+                "appointment": [
+                    1,
+                    3,
+                    5,
+                    0
+                ],
+                "userId": 74,
+                "createdAt": "2024-06-08T06:13:13.000Z",
+                "updatedAt": "2024-06-08T06:13:13.000Z"
+            },
+            {
+                "id": 51,
+                "name": "Francis McClure",
+                "image": "https://loremflickr.com/150/150/human/?random=51.11361330940127",
+                "introduction": "Maiores sit nisi ipsum voluptatem enim esse autem....",
+                "teachingStyle": "Laudantium eaque omnis fuga et dolores....",
+                "duringTime": "30",
+                "location": "14575 Carroll Locks",
+                "appointment": [
+                    1,
+                    6,
+                    0
+                ],
+                "userId": 75,
+                "createdAt": "2024-06-08T06:13:13.000Z",
+                "updatedAt": "2024-06-08T06:13:13.000Z"
+            }
+        ],
+        "userRecordRank": [
+            {
+                "user_id": 96,
+                "totalTime": 300,
+                "rankIndex": 1
+            },
+            {
+                "user_id": 69,
+                "totalTime": 240,
+                "rankIndex": 2
+            },
+            {
+                "user_id": 84,
+                "totalTime": 210,
+                "rankIndex": 3
+            },
+            {
+                "user_id": 86,
+                "totalTime": 210,
+                "rankIndex": 4
+            },
+            {
+                "user_id": 83,
+                "totalTime": 210,
+                "rankIndex": 5
+            },
+            {
+                "user_id": 68,
+                "totalTime": 210,
+                "rankIndex": 6
+            },
+            {
+                "user_id": 85,
+                "totalTime": 180,
+                "rankIndex": 7
+            },
+            {
+                "user_id": 91,
+                "totalTime": 180,
+                "rankIndex": 8
+            },
+            {
+                "user_id": 94,
+                "totalTime": 180,
+                "rankIndex": 9
+            },
+            {
+                "user_id": 76,
+                "totalTime": 180,
+                "rankIndex": 10
+            }
+        ],
+        "pagination": {
+            "pages": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "totalPage": 5,
+            "currentPage": 2,
+            "prev": 1,
+            "next": 3
+        }
+    }
+}
+```
 ## GET /api/lessons/:trainerId (get available lesson and trainer info for user) 
 user can get the trainer information including:
 - trainer info

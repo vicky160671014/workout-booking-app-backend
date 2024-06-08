@@ -25,9 +25,9 @@ router.get('/trainers/:trainerId', authenticated, trainerController.getTrainer)
 router.put('/trainers/:trainerId', authenticated, upload.single('image'), trainerController.putTrainer)
 
 // lesson
-router.get('/lessons/search', searchController.getLessons)
-router.get('/lessons/:trainerId', lessonController.getLesson)
-router.get('/lessons', lessonController.getLessons)
+router.get('/lessons/search', authenticated, searchController.getLessons)
+router.get('/lessons/:trainerId', authenticated, lessonController.getLesson)
+router.get('/lessons', authenticated, lessonController.getLessons)
 
 // record
 router.delete('/records/:recordId', authenticated, lessonController.deleteAppointment)
@@ -36,9 +36,7 @@ router.post('/records', authenticated, lessonController.postAppointment)
 // comment
 router.post('/comments', authenticated, commentController.postCommentScore)
 
-router.get('/', (req, res) => {
-  res.send('workout booking app!')
-})
+router.get('*', (req, res) => res.redirect('/lessons'))
 
 router.use('/', errorHandler)
 

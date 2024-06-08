@@ -2,11 +2,54 @@
 const db = require('../models')
 const { Trainer, Record, Comment } = db
 const timeTool = require('../helpers/time-helpers')
+const rankTool = require('../helpers/rank-helper')
+const { getOffset, getPagination } = require('../helpers/pagination-helper')
 const { Op, Sequelize } = require('sequelize')
 const dayjs = require('dayjs')
 
 const lessonServices = {
-  getLessons: (req, cb) => {},
+  getLessons: async (req, cb) => {
+    try {
+      const today = timeTool.currentTaipeiTime()
+      const DEFAULT_LIMIT = 8
+      const page = Number(req.query.page) || 1
+      const limit = Number(req.query.limit) || DEFAULT_LIMIT
+      const offset = getOffset(limit, page)
+
+      const [findTrainers, findUserRecord] = await Promise.all([
+        Trainer.findAndCountAll({
+          limit,
+          offset,
+          raw: true
+        }),
+        Record.findAll({
+          where: { startTime: { [Op.lt]: today } },
+          attributes: [
+            'user_id',
+            [Sequelize.fn('sum', Sequelize.col('during_time')), 'totalTime']
+          ],
+          group: ['user_id'],
+          order: [
+            [Sequelize.fn('sum', Sequelize.col('during_time')), 'DESC']
+          ],
+          limit: 10,
+          raw: true
+        })
+      ])
+
+      const trainers = findTrainers.rows.map(t => ({
+        ...t,
+        introduction: t.introduction && t.introduction.length ? `${t.introduction.substring(0, 50)}...` : '',
+        teachingStyle: t.teachingStyle && t.teachingStyle.length ? `${t.teachingStyle.substring(0, 50)}...` : ''
+      }))
+
+      const userRecordRank = rankTool.addRankIndex(findUserRecord)
+
+      cb(null, { trainers, userRecordRank, pagination: getPagination(limit, page, findTrainers.count) })
+    } catch (error) {
+      cb(error)
+    }
+  },
   getLesson: async (req, cb) => {
     try {
       const { trainerId } = req.params
