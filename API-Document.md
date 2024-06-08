@@ -682,3 +682,110 @@ Failure Response | code : 500
     "message": "Error: Please fill in the score from 1 to 5 points"
 }
 ```
+## GET /api/lessons/:trainerId (get available lesson and trainer info for user) 
+user can get the trainer information including:
+- trainer info
+- available reservation time
+- top and lowest rated comments
+- average comment score  
+  
+(authentication is required)
+### Path Variables  
+| Params | Required | Type | Description |
+| --- | --- | --- | --- |
+| trainerId | Required | int | trainer id |
+### Response 
+Success | code : 200  
+```json
+{
+    "status": "success",
+    "data": {
+        "trainer": {
+            "id": 44,
+            "name": "Faith Lebsack",
+            "image": "https://loremflickr.com/150/150/human/?random=57.45773391794711",
+            "introduction": "Placeat omnis distinctio sed eos laboriosam. Voluptatum officia maiores qui. At officia est sint vitae eveniet ut. Et eum eligendi dolore velit a dolor excepturi quasi. Occaecati natus ad reprehenderit est dolores temporibus porro quia. Sint eos temporibus nemo.",
+            "teachingStyle": "Eveniet ex consectetur rerum qui.",
+            "duringTime": "30",
+            "location": "45384 Brigitte Street",
+            "appointment": [
+                3,
+                4,
+                5
+            ],
+            "userId": 68,
+            "createdAt": "2024-06-08T06:13:13.000Z",
+            "updatedAt": "2024-06-08T06:13:13.000Z",
+            "availableReserveTime": [
+                "2024-06-12 18:00",
+                "2024-06-12 20:00",
+                "2024-06-12 20:30",
+                "2024-06-12 21:00",
+                "2024-06-13 18:00",
+                "2024-06-13 18:30",
+                "2024-06-13 19:00",
+                "2024-06-13 19:30",
+                "2024-06-13 20:00",
+                "2024-06-13 20:30",
+                "2024-06-13 21:00",
+                "2024-06-14 18:00",
+                "2024-06-14 18:30",
+                "2024-06-14 19:00",
+                "2024-06-14 19:30",
+                "2024-06-14 20:00",
+                "2024-06-14 20:30",
+                "2024-06-14 21:00",
+                "2024-06-19 18:00",
+                "2024-06-19 18:30",
+                "2024-06-19 19:00",
+                "2024-06-19 19:30",
+                "2024-06-19 20:00",
+                "2024-06-19 20:30",
+                "2024-06-19 21:00",
+                "2024-06-20 18:00",
+                "2024-06-20 18:30",
+                "2024-06-20 19:00",
+                "2024-06-20 19:30",
+                "2024-06-20 20:00",
+                "2024-06-20 20:30",
+                "2024-06-20 21:00",
+                "2024-06-21 18:00",
+                "2024-06-21 18:30",
+                "2024-06-21 19:00",
+                "2024-06-21 19:30",
+                "2024-06-21 20:00",
+                "2024-06-21 20:30",
+                "2024-06-21 21:00"
+            ]
+        },
+        "highComment": {
+            "id": 89,
+            "scores": 4,
+            "text": "Ut officia libero blanditiis.\nQuos recusandae veritatis accusantium qui molestias quis.\nEum dolore pariatur molestiae et eligendi assumenda tempore quaerat.\nDoloribus at eum.\nDeleniti provident quo illum amet veritatis.",
+            "userId": 82,
+            "trainerId": 44,
+            "createdAt": "2024-06-08T06:13:13.000Z",
+            "updatedAt": "2024-06-08T06:13:13.000Z"
+        },
+        "lowComment": {
+            "id": 90,
+            "scores": 3,
+            "text": "Aut perferendis qui in aut eaque sint laudantium explicabo. Culpa non sit non non est. Similique dolorem et maxime quia autem illo perspiciatis itaque. Exercitationem ad quis odit voluptas. Non necessitatibus ut aut inventore et nisi architecto ut.",
+            "userId": 96,
+            "trainerId": 44,
+            "createdAt": "2024-06-08T06:13:13.000Z",
+            "updatedAt": "2024-06-08T06:13:13.000Z"
+        },
+        "avgCommentScore": {
+            "avgScores": "3.5"
+        }
+    }
+}
+```
+Failure Response | code : 500
+```json
+{
+    "status": "error",
+    "message": "Error: Trainer didn't exist!"
+}
+```

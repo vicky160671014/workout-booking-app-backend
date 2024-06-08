@@ -68,6 +68,11 @@ const timeTool = {
       }
     }
     return newAppointmentStartTime
+  },
+  availableReserve: (appointment, bookedRecord, duringTime) => {
+    const allLessonTime = timeTool.openLessonTime(appointment, duringTime)
+    const availableReserveTime = allLessonTime.filter(time => !bookedRecord.includes(time))
+    return availableReserveTime
   }
 }
 

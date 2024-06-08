@@ -26,7 +26,7 @@ router.put('/trainers/:trainerId', authenticated, upload.single('image'), traine
 
 // lesson
 router.get('/lessons/search', searchController.getLessons)
-// router.get('/lessons/:trainerId', lessonController.getLesson)
+router.get('/lessons/:trainerId', lessonController.getLesson)
 router.get('/lessons', lessonController.getLessons)
 
 // record

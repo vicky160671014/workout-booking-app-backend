@@ -5,6 +5,9 @@ const lessonController = {
   getLessons: (req, res, next) => {
     lessonServices.getLessons(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
   },
+  getLesson: (req, res, next) => {
+    lessonServices.getLesson(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+  },
   postAppointment: (req, res, next) => {
     lessonServices.postAppointment(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
   },

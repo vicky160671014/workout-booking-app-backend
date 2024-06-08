@@ -1,10 +1,59 @@
 // Services 負責商業邏輯運算
 const db = require('../models')
-const { Trainer, Record } = db
+const { Trainer, Record, Comment } = db
 const timeTool = require('../helpers/time-helpers')
+const { Op, Sequelize } = require('sequelize')
+const dayjs = require('dayjs')
 
 const lessonServices = {
   getLessons: (req, cb) => {},
+  getLesson: async (req, cb) => {
+    try {
+      const { trainerId } = req.params
+      const todayAddOne = dayjs(timeTool.currentTaipeiTime()).add(1, 'day').format('YYYY-MM-DD')
+      const [trainer, findRecord, allComments, avgCommentScore] = await Promise.all([
+        Trainer.findByPk(trainerId, { raw: true }),
+        Record.findAll({
+          where: {
+            trainerId,
+            startTime: { [Op.gte]: todayAddOne }
+          },
+          raw: true
+        }) || [],
+        Comment.findAll({
+          where: { trainerId },
+          order: [['scores', 'DESC']],
+          raw: true
+        }),
+        Comment.findOne({
+          where: { trainerId },
+          attributes: [
+            [Sequelize.fn('AVG', Sequelize.col('scores')), 'avgScores']
+          ],
+          raw: true
+        })
+      ])
+
+      if (!trainer) throw new Error("Trainer didn't exist!")
+
+      // 計算目前此教練可以被預約的時間
+      const bookedRecord = findRecord.map(r => r.startTime)
+      if (typeof (trainer.appointment) !== 'object') {
+        const newArray = []
+        newArray.push(trainer.appointment)
+        trainer.appointment = newArray
+      }
+      trainer.availableReserveTime = timeTool.availableReserve(trainer.appointment, bookedRecord, trainer.duringTime)
+      // 最佳評論、最差評論、平均分數
+      avgCommentScore.avgScores = parseFloat(avgCommentScore.avgScores).toFixed(1)
+      const highComment = allComments[0]
+      const lowComment = allComments.length > 1 ? allComments[allComments.length - 1] : null
+
+      cb(null, { trainer, highComment, lowComment, avgCommentScore })
+    } catch (error) {
+      cb(error)
+    }
+  },
   postAppointment: async (req, cb) => {
     const userId = req.user.id
     const { trainerId, appointment } = req.body
