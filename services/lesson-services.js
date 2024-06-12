@@ -1,6 +1,6 @@
 // Services 負責商業邏輯運算
 const db = require('../models')
-const { Trainer, Record, Comment } = db
+const { Trainer, Record, Comment, User } = db
 const timeTool = require('../helpers/time-helpers')
 const rankTool = require('../helpers/rank-helper')
 const { getOffset, getPagination } = require('../helpers/pagination-helper')
@@ -24,6 +24,7 @@ const lessonServices = {
         }),
         Record.findAll({
           where: { startTime: { [Op.lt]: today } },
+          include: [{ model: User, attributes: ['name', 'image'] }],
           attributes: [
             'user_id',
             [Sequelize.fn('sum', Sequelize.col('during_time')), 'totalTime']

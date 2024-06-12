@@ -774,53 +774,73 @@ Success | code : 200
         ],
         "userRecordRank": [
             {
-                "user_id": 96,
-                "totalTime": 300,
+                "user_id": 91,
+                "totalTime": 450,
+                "User.name": "Herbert Paucek",
+                "User.image": "https://loremflickr.com/150/150/human/?random=42.24132897776267",
                 "rankIndex": 1
             },
             {
-                "user_id": 69,
-                "totalTime": 240,
+                "user_id": 87,
+                "totalTime": 390,
+                "User.name": "Oscar Kiehn",
+                "User.image": "https://loremflickr.com/150/150/human/?random=40.93412952822506",
                 "rankIndex": 2
             },
             {
-                "user_id": 84,
-                "totalTime": 210,
+                "user_id": 96,
+                "totalTime": 360,
+                "User.name": "Annie Borer",
+                "User.image": "https://loremflickr.com/150/150/human/?random=11.673722149008192",
                 "rankIndex": 3
             },
             {
-                "user_id": 86,
-                "totalTime": 210,
+                "user_id": 74,
+                "totalTime": 330,
+                "User.name": "Kate Homenick",
+                "User.image": "https://loremflickr.com/150/150/human/?random=42.11431855613383",
                 "rankIndex": 4
             },
             {
-                "user_id": 83,
-                "totalTime": 210,
+                "user_id": 69,
+                "totalTime": 330,
+                "User.name": "Leticia Leuschke",
+                "User.image": "https://loremflickr.com/150/150/human/?random=24.865555798947003",
                 "rankIndex": 5
             },
             {
-                "user_id": 68,
-                "totalTime": 210,
+                "user_id": 86,
+                "totalTime": 330,
+                "User.name": "Stella Pagac",
+                "User.image": "https://loremflickr.com/150/150/human/?random=91.70938209055271",
                 "rankIndex": 6
             },
             {
                 "user_id": 85,
-                "totalTime": 180,
+                "totalTime": 300,
+                "User.name": "Kerry Hettinger",
+                "User.image": "https://loremflickr.com/150/150/human/?random=15.67003437424308",
                 "rankIndex": 7
             },
             {
-                "user_id": 91,
-                "totalTime": 180,
+                "user_id": 76,
+                "totalTime": 270,
+                "User.name": "Ana Kessler",
+                "User.image": "https://loremflickr.com/150/150/human/?random=23.5005319068069",
                 "rankIndex": 8
             },
             {
-                "user_id": 94,
-                "totalTime": 180,
+                "user_id": 84,
+                "totalTime": 270,
+                "User.name": "Stephanie Upton",
+                "User.image": "https://loremflickr.com/150/150/human/?random=32.33721940154442",
                 "rankIndex": 9
             },
             {
-                "user_id": 76,
-                "totalTime": 180,
+                "user_id": 68,
+                "totalTime": 270,
+                "User.name": "user1",
+                "User.image": "https://loremflickr.com/150/150/human/?random=62.735298765380335",
                 "rankIndex": 10
             }
         ],
