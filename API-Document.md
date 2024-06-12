@@ -84,7 +84,7 @@ Failure Response | code : 500
 ```
 
 ## GET /api/users/:userId (user info)  
-get user info  
+get user info, recent reservation in future, awaiting comment list, personal rank about total lesson time.  
   
 (authentication is required)
 
@@ -100,14 +100,83 @@ Success | code : 200
     "status": "success",
     "data": {
         "user": {
-            "id": 1,
-            "name": "AOA",
-            "email": "root@example.com",
-            "image": "/upload/104506_81750082.jpg",
-            "introduction": "hlihwqlihlhdlnlaksjasdlsakjdklj",
-            "createdAt": "2024-05-15T07:12:48.000Z",
-            "updatedAt": "2024-05-16T13:48:58.000Z"
-        }
+            "id": 68,
+            "name": "user1",
+            "email": "user1@example.com",
+            "image": "https://loremflickr.com/150/150/human/?random=62.735298765380335",
+            "introduction": "cum",
+            "createdAt": "2024-06-08T06:13:11.000Z",
+            "updatedAt": "2024-06-08T06:13:11.000Z",
+            "isTrainer": {
+                "id": 44,
+                "name": "Faith Lebsack",
+                "image": "https://loremflickr.com/150/150/human/?random=57.45773391794711",
+                "introduction": "Placeat omnis distinctio sed eos laboriosam. Voluptatum officia maiores qui. At officia est sint vitae eveniet ut. Et eum eligendi dolore velit a dolor excepturi quasi. Occaecati natus ad reprehenderit est dolores temporibus porro quia. Sint eos temporibus nemo.",
+                "teachingStyle": "Eveniet ex consectetur rerum qui.",
+                "duringTime": "30",
+                "location": "45384 Brigitte Street",
+                "appointment": [
+                    3,
+                    4,
+                    5
+                ],
+                "userId": 68,
+                "createdAt": "2024-06-08T06:13:13.000Z",
+                "updatedAt": "2024-06-08T06:13:13.000Z"
+            }
+        },
+        "newReservation": [
+            {
+                "id": 649,
+                "startTime": "2024-06-21 20:00",
+                "duringTime": "60",
+                "userId": 68,
+                "trainerId": 45,
+                "createdAt": "2024-06-12T12:50:59.000Z",
+                "updatedAt": "2024-06-12T12:50:59.000Z",
+                "Trainer": {
+                    "id": 45,
+                    "name": "Mr. Sheri Huel",
+                    "image": "https://loremflickr.com/150/150/human/?random=98.67364676095328",
+                    "introduction": "Consectetur quibusdam illo quis incidunt voluptas aliquid.\nEt ut hic mollitia ullam nisi.\nAutem recusandae consectetur natus quis a quibusdam rerum alias ipsa.\nEa ipsam aperiam ut voluptatem.\nSit quidem corporis culpa ea.",
+                    "teachingStyle": "qui",
+                    "duringTime": "60",
+                    "location": "4524 Laney Crest",
+                    "appointment": [
+                        3,
+                        4,
+                        5
+                    ],
+                    "userId": 69,
+                    "createdAt": "2024-06-08T06:13:13.000Z",
+                    "updatedAt": "2024-06-08T06:13:13.000Z"
+                }
+            }
+        ],
+        "awaitCommentRecord": [
+            {
+                "trainerId": 62,
+                "Trainer": {
+                    "name": "Sheila Gusikowski",
+                    "image": "https://loremflickr.com/150/150/human/?random=95.51904097367823"
+                }
+            },
+            {
+                "trainerId": 50,
+                "Trainer": {
+                    "name": "Ronnie Hoeger",
+                    "image": "https://loremflickr.com/150/150/human/?random=19.818182384283723"
+                }
+            },
+            {
+                "trainerId": 61,
+                "Trainer": {
+                    "name": "Mathew Kling",
+                    "image": "https://loremflickr.com/150/150/human/?random=60.87980797848444"
+                }
+            }
+        ],
+        "myRankIndex": 9
     }
 }
 ```

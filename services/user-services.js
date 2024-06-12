@@ -2,8 +2,11 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const db = require('../models')
-const { User } = db
+const { User, Trainer, Record, Comment } = db
 const { localFileHandler } = require('../helpers/file-helpers')
+const timeTool = require('../helpers/time-helpers')
+const rankTool = require('../helpers/rank-helper')
+const { Op, Sequelize } = require('sequelize')
 
 const userServices = {
   signUp: async (req, cb) => {
@@ -38,10 +41,65 @@ const userServices = {
   getUser: async (req, cb) => {
     try {
       const userId = req.user.id
-      const user = await User.findByPk(userId, { raw: true })
+      const today = timeTool.currentTaipeiTime()
+      const [user, findNewReservation, findComments, allRanks] = await Promise.all([
+        User.findByPk(userId, {
+          include: [{ model: Trainer, as: 'isTrainer' }],
+          raw: true,
+          nest: true
+        }),
+        Record.findAll({
+          where: {
+            userId,
+            startTime: { [Op.gte]: today }
+          },
+          include: { model: Trainer },
+          raw: true,
+          nest: true
+        }),
+        Comment.findAll({
+          where: { userId },
+          attributes: [
+            [Sequelize.fn('DISTINCT', Sequelize.col('trainer_id')), 'trainerId']
+          ],
+          raw: true
+        }),
+        Record.findAll({
+          where: { startTime: { [Op.lt]: today } },
+          include: [{ model: User, attributes: ['name', 'image'] }],
+          attributes: [
+            'user_id',
+            [Sequelize.fn('sum', Sequelize.col('during_time')), 'totalTime']
+          ],
+          group: ['user_id'],
+          order: [
+            [Sequelize.fn('sum', Sequelize.col('during_time')), 'DESC']
+          ],
+          raw: true
+        })
+      ])
       if (!user) throw new Error("User didn't exist!")
       delete user.password
-      cb(null, { user })
+
+      const commentedTrainer = findComments.map(c => c.trainerId)
+      const awaitCommentRecord = await Record.findAll({
+        where: {
+          userId,
+          startTime: { [Op.lt]: today },
+          trainerId: { [Op.notIn]: commentedTrainer }
+        },
+        attributes: [
+          [Sequelize.fn('DISTINCT', Sequelize.col('trainer_id')), 'trainerId']
+        ],
+        include: { model: Trainer, attributes: ['name', 'image'] },
+        raw: true,
+        nest: true
+      })
+
+      const newReservation = findNewReservation.sort((a, b) => Date.parse(a.startTime) - Date.parse(b.startTime))
+
+      const myRankIndex = rankTool.myRank(userId, allRanks)
+      cb(null, { user, newReservation, awaitCommentRecord, myRankIndex })
     } catch (error) {
       cb(error)
     }
