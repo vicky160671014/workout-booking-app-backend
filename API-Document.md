@@ -947,3 +947,111 @@ Failure Response | code : 500
     "message": "Error: Trainer didn't exist!"
 }
 ```
+## GET /api/lessons/search (search)
+user can search trainer's information by keyword(search column: name, introduction, teaching style, location)
+  
+(authentication is required)
+### Query Parameters
+| Params | Required | Type | Description |
+| --- | --- | --- | --- |
+| keyword | Required | string | search trainer's information by keyword |
+| page |  | int | index page (default: 1) |
+| limit |  | int | number of trainer to show in home page (default: 8) |
+### Response 
+Success | code : 200  
+```json
+{
+    "status": "success",
+    "data": {
+        "trainers": [
+            {
+                "id": 44,
+                "name": "Faith Lebsack",
+                "image": "https://loremflickr.com/150/150/human/?random=57.45773391794711",
+                "introduction": "Placeat omnis distinctio sed eos laboriosam. Volup...",
+                "teachingStyle": "Eveniet ex consectetur rerum qui....",
+                "duringTime": "30",
+                "location": "45384 Brigitte Street",
+                "appointment": [
+                    3,
+                    4,
+                    5
+                ],
+                "userId": 68,
+                "createdAt": "2024-06-08T06:13:13.000Z",
+                "updatedAt": "2024-06-08T06:13:13.000Z"
+            },
+            {
+                "id": 45,
+                "name": "Mr. Sheri Huel",
+                "image": "https://loremflickr.com/150/150/human/?random=98.67364676095328",
+                "introduction": "Consectetur quibusdam illo quis incidunt voluptas ...",
+                "teachingStyle": "qui...",
+                "duringTime": "60",
+                "location": "4524 Laney Crest",
+                "appointment": [
+                    3,
+                    4,
+                    5
+                ],
+                "userId": 69,
+                "createdAt": "2024-06-08T06:13:13.000Z",
+                "updatedAt": "2024-06-08T06:13:13.000Z"
+            },
+            {
+                "id": 49,
+                "name": "Doug Collins",
+                "image": "https://loremflickr.com/150/150/human/?random=66.84208334617314",
+                "introduction": "Maiores id ut quisquam....",
+                "teachingStyle": "Molestiae neque ex alias et explicabo perferendis ...",
+                "duringTime": "60",
+                "location": "41166 Cassin Pike",
+                "appointment": [
+                    1,
+                    3,
+                    5,
+                    0
+                ],
+                "userId": 73,
+                "createdAt": "2024-06-08T06:13:13.000Z",
+                "updatedAt": "2024-06-08T06:13:13.000Z"
+            },
+            {
+                "id": 55,
+                "name": "Ms. Max Satterfield",
+                "image": "https://loremflickr.com/150/150/human/?random=46.28674774822847",
+                "introduction": "Doloremque laudantium enim consectetur fuga beatae...",
+                "teachingStyle": "eum...",
+                "duringTime": "30",
+                "location": "6735 Metz Way",
+                "appointment": [
+                    1,
+                    3,
+                    5,
+                    0
+                ],
+                "userId": 79,
+                "createdAt": "2024-06-08T06:13:13.000Z",
+                "updatedAt": "2024-06-08T06:13:13.000Z"
+            }
+        ],
+        "pagination": {
+            "pages": [
+                1
+            ],
+            "totalPage": 1,
+            "currentPage": 1,
+            "prev": 1,
+            "next": 1
+        },
+        "keyword": "sec"
+    }
+}
+```
+Failure Response | code : 500
+```json
+{
+    "status": "error",
+    "message": "Error: No keyword, redirect to home page"
+}
+```
