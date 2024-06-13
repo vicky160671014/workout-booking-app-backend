@@ -1144,3 +1144,36 @@ Failure Response | code : 500
     "message": "Error: No keyword, redirect to home page"
 }
 ```
+# Admin
+## POST /api/admin/signin (admin signin)  
+Admin sign in.  
+### Request Body  
+| Params | Required | Type | Description |
+| --- | --- | --- | --- |
+| email | Required | string | Admin email |
+| password | Required | string | Admin password |  
+
+### Response 
+Success | code : 200  
+```json
+{
+    "status": "success",
+    "data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6InJvb3QiLCJlbWFpbCI6InJvb3RAZXhhbXBsZS5jb20iLCJjcmVhdGVkQXQiOiIyMDI0LTA2LTEzVDA1OjQ0OjU1LjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDI0LTA2LTEzVDA1OjQ0OjU1LjAwMFoiLCJpYXQiOjE3MTgyNjE0ODMsImV4cCI6MTcyMDg1MzQ4M30.g-JTM-Th4PixPtim2E98gJ9sRgv-IZ18JkXT3_Hzb4w",
+        "userAdmin": {
+            "id": 1,
+            "name": "root",
+            "email": "root@example.com",
+            "createdAt": "2024-06-13T05:44:55.000Z",
+            "updatedAt": "2024-06-13T05:44:55.000Z"
+        }
+    }
+}
+```
+Failure Response | code : 500  
+```json
+{
+    "status": "error",
+    "message": "Error: Email or password wrong!"
+}
+```
