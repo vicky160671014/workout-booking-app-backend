@@ -1177,3 +1177,118 @@ Failure Response | code : 500
     "message": "Error: Email or password wrong!"
 }
 ```
+## GET /api/admin (admin get all users)
+Admin can get all users' info.  
+  
+(authentication is required)
+### Query Parameters
+| Params | Required | Type | Description |
+| --- | --- | --- | --- |
+| page |  | int | index page (default: 1) |
+| limit |  | int | number of trainer to show in home page (default: 3) |
+### Response 
+Success | code : 200  
+```json
+{
+    "status": "success",
+    "data": {
+        "users": {
+            "count": 31,
+            "rows": [
+                {
+                    "id": 68,
+                    "name": "user1",
+                    "email": "user1@example.com",
+                    "image": "https://loremflickr.com/150/150/human/?random=62.735298765380335",
+                    "introduction": "cum",
+                    "isTrainer": {
+                        "id": 44,
+                        "name": "Faith Lebsack",
+                        "image": "https://loremflickr.com/150/150/human/?random=57.45773391794711",
+                        "introduction": "Placeat omnis distinctio sed eos laboriosam. Voluptatum officia maiores qui. At officia est sint vitae eveniet ut. Et eum eligendi dolore velit a dolor excepturi quasi. Occaecati natus ad reprehenderit est dolores temporibus porro quia. Sint eos temporibus nemo.",
+                        "teachingStyle": "Eveniet ex consectetur rerum qui.",
+                        "duringTime": "30",
+                        "location": "45384 Brigitte Street",
+                        "appointment": [
+                            3,
+                            4,
+                            5
+                        ],
+                        "userId": 68,
+                        "createdAt": "2024-06-08T06:13:13.000Z",
+                        "updatedAt": "2024-06-08T06:13:13.000Z"
+                    }
+                },
+                {
+                    "id": 69,
+                    "name": "Leticia Leuschke",
+                    "email": "Julio_Abbott@example.net",
+                    "image": "https://loremflickr.com/150/150/human/?random=24.865555798947003",
+                    "introduction": "Maiores est et facilis ut vel magni aut voluptas. Adipisci voluptates qui distinctio repellat natus est delectus ullam. Placeat aliquam error sunt nostrum impedit consequatur rerum perferendis. Molestiae vel voluptatem laborum repellendus quidem. Et excepturi distinctio aliquam. Veritatis dolore deserunt qui veritatis saepe qui.",
+                    "isTrainer": {
+                        "id": 45,
+                        "name": "Mr. Sheri Huel",
+                        "image": "https://loremflickr.com/150/150/human/?random=98.67364676095328",
+                        "introduction": "Consectetur quibusdam illo quis incidunt voluptas aliquid.\nEt ut hic mollitia ullam nisi.\nAutem recusandae consectetur natus quis a quibusdam rerum alias ipsa.\nEa ipsam aperiam ut voluptatem.\nSit quidem corporis culpa ea.",
+                        "teachingStyle": "qui",
+                        "duringTime": "60",
+                        "location": "4524 Laney Crest",
+                        "appointment": [
+                            3,
+                            4,
+                            5
+                        ],
+                        "userId": 69,
+                        "createdAt": "2024-06-08T06:13:13.000Z",
+                        "updatedAt": "2024-06-08T06:13:13.000Z"
+                    }
+                },
+                {
+                    "id": 70,
+                    "name": "Kelli Abshire",
+                    "email": "Rod_Bayer@example.net",
+                    "image": "https://loremflickr.com/150/150/human/?random=3.6518763002875376",
+                    "introduction": "Reiciendis et consequatur praesentium. Distinctio ea incidunt nihil ut. Cupiditate autem est fugiat voluptate. Et quasi labore autem.\n \rEnim ipsam impedit magni voluptatibus aut autem exercitationem recusandae. Sunt tenetur amet sint ea non quibusdam illo nisi neque. Numquam minus et sit. Fuga totam est ducimus.\n \rQuae quisquam enim distinctio cum quia commodi quod. Necessitatibus aut distinctio iusto dignissimos in autem reprehenderit optio sunt. Natus asperiores rerum est asperiores distinctio voluptatem. Qui tempore et totam ex atque molestiae et. Aliquam rerum quia nemo eveniet repellendus et et.",
+                    "isTrainer": {
+                        "id": 46,
+                        "name": "Lucia Strosin",
+                        "image": "https://loremflickr.com/150/150/human/?random=46.682780142854895",
+                        "introduction": "Esse placeat rerum id et veritatis quasi praesentium nihil quia.\nUllam maxime ipsam maiores odit et nam accusantium.",
+                        "teachingStyle": "Delectus quaerat non neque perspiciatis voluptas. Culpa ut maxime. At unde quaerat nemo et facilis tempora iste. Mollitia autem dolores porro et facilis in impedit nam unde.",
+                        "duringTime": "30",
+                        "location": "946 Steuber Terrace",
+                        "appointment": [
+                            1,
+                            3,
+                            5,
+                            0
+                        ],
+                        "userId": 70,
+                        "createdAt": "2024-06-08T06:13:13.000Z",
+                        "updatedAt": "2024-06-08T06:13:13.000Z"
+                    }
+                }
+            ]
+        },
+        "pagination": {
+            "pages": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11
+            ],
+            "totalPage": 11,
+            "currentPage": 1,
+            "prev": 1,
+            "next": 2
+        }
+    }
+}
+```
