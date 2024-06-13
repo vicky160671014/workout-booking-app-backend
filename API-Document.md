@@ -1,9 +1,38 @@
+# Workout Booking APP - API Document<!-- omit in toc -->
+
+## Table of contents<!-- omit in toc -->
+- [ERD (Entity Relationship Diagram)](#erd-entity-relationship-diagram)
+- [User](#user)
+  - [POST /api/signup (User signup)](#post-apisignup-user-signup)
+  - [POST /api/signin (User signin)](#post-apisignin-user-signin)
+  - [GET /api/users/:userId (User info)](#get-apiusersuserid-user-info)
+  - [PUT /api/users/:userId (Update user info)](#put-apiusersuserid-update-user-info)
+- [Trainer](#trainer)
+  - [POST /api/trainers/create (Apply to be trainer)](#post-apitrainerscreate-apply-to-be-trainer)
+  - [PUT /api/trainers/:trainerId (Modify trainer information)](#put-apitrainerstrainerid-modify-trainer-information)
+  - [GET /api/trainers/:trainerId (Trainer info)](#get-apitrainerstrainerid-trainer-info)
+- [Record](#record)
+  - [POST /api/records (User make an appointment)](#post-apirecords-user-make-an-appointment)
+  - [DELETE /api/records/:recordId (User cancel appointment)](#delete-apirecordsrecordid-user-cancel-appointment)
+- [Comment](#comment)
+  - [POST /api/comments (Comment)](#post-apicomments-comment)
+- [Lesson](#lesson)
+  - [GET /api/lessons (User home page)](#get-apilessons-user-home-page)
+  - [GET /api/lessons/:trainerId (User gets available lesson and trainer info)](#get-apilessonstrainerid-user-gets-available-lesson-and-trainer-info)
+  - [GET /api/lessons/search (Search)](#get-apilessonssearch-search)
+- [Admin](#admin)
+  - [POST /api/admin/signin (Admin signin)](#post-apiadminsignin-admin-signin)
+  - [GET /api/admin (Admin get all users)](#get-apiadmin-admin-get-all-users)
+
+
+# ERD (Entity Relationship Diagram)
+ERD (Entity Relationship Diagram)
 # User  
 
-## POST /api/signup (user signup)  
-user sign up.  
+## POST /api/signup (User signup)  
+User sign up.  
 
-### Request Body  
+### Request Body<!-- omit in toc -->
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | name | Required | string | User name |
@@ -11,7 +40,7 @@ user sign up.
 | password | Required | string | User password |
 | confirmPassword | Required | string | retype the password |
 
-### Response 
+### Response<!-- omit in toc -->
 Success | code : 200  
 ```json
 {
@@ -41,29 +70,29 @@ Failure Response | code : 500
     "message": "Error: Passwords do not match!"
 }
 ```
-## POST /api/signin (user signin)  
-user sign in.  
-### Request Body  
+## POST /api/signin (User signin)  
+User sign in.  
+### Request Body<!-- omit in toc --> 
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | email | Required | string | User email |
 | password | Required | string | User password |  
 
-### Response 
+### Response<!-- omit in toc --> 
 Success | code : 200  
 ```json
 {
     "status": "success",
     "data": {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6ImJvYiIsImVtYWlsIjoicm9vdEBleGFtcGxlLmNvbSIsImltYWdlIjpudWxsLCJpbnRyb2R1Y3Rpb24iOm51bGwsImNyZWF0ZWRBdCI6IjIwMjQtMDUtMTVUMDc6MTI6NDguMDAwWiIsInVwZGF0ZWRBdCI6IjIwMjQtMDUtMTVUMDc6MTI6NDguMDAwWiIsImlhdCI6MTcxNTc4MjYzNCwiZXhwIjoxNzE4Mzc0NjM0fQ.t9YsUMwBmNGF1yCfqPuDRGM0UBw4rUU22Ouiaij4MYw",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjgsIm5hbWUiOiJ1c2VyMSIsImVtYWlsIjoidXNlcjFAZXhhbXBsZS5jb20iLCJpbWFnZSI6Imh0dHBzOi8vbG9yZW1mbGlja3IuY29tLzE1MC8xNTAvaHVtYW4vP3JhbmRvbT02Mi43MzUyOTg3NjUzODAzMzUiLCJpbnRyb2R1Y3Rpb24iOiJjdW0iLCJjcmVhdGVkQXQiOiIyMDI0LTA2LTA4VDA2OjEzOjExLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDI0LTA2LTA4VDA2OjEzOjExLjAwMFoiLCJpYXQiOjE3MTgyODk2MTcsImV4cCI6MTcyMDg4MTYxN30.ev7REfSHCfHYNJxKPgxo_xVgRrrHKR7wyHJLdGgvxuE",
         "user": {
-            "id": 1,
-            "name": "bob",
-            "email": "root@example.com",
-            "image": null,
-            "introduction": null,
-            "createdAt": "2024-05-15T07:12:48.000Z",
-            "updatedAt": "2024-05-15T07:12:48.000Z"
+            "id": 68,
+            "name": "user1",
+            "email": "user1@example.com",
+            "image": "https://loremflickr.com/150/150/human/?random=62.735298765380335",
+            "introduction": "cum",
+            "createdAt": "2024-06-08T06:13:11.000Z",
+            "updatedAt": "2024-06-08T06:13:11.000Z"
         }
     }
 }
@@ -83,17 +112,17 @@ Failure Response | code : 500
 }
 ```
 
-## GET /api/users/:userId (user info)  
-get user info, recent reservation in future, awaiting comment list, personal rank about total lesson time.  
+## GET /api/users/:userId (User info)  
+Get user info, recent reservation in future, awaiting comment list, personal rank about total lesson time.  
   
 (authentication is required)
 
-### Path Variables  
+### Path Variables<!-- omit in toc -->  
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | userId | Required | int | user id |
 
-### Response 
+### Response<!-- omit in toc --> 
 Success | code : 200  
 ```json
 {
@@ -195,21 +224,21 @@ Failure Response | code : 500
 }
 ```
 
-## PUT /api/users/:userId (update user info)  
-update user info  
+## PUT /api/users/:userId (Update user info)  
+User can update user info  
   
 (authentication is required)
-### Path Variables  
+### Path Variables<!-- omit in toc -->  
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | userId | Required | int | user id |
-### Request Body  
+### Request Body<!-- omit in toc -->  
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | name | Required | string | User name |
 | introduction |   | string | User password |
 | image |   | file | User image |
-### Response 
+### Response<!-- omit in toc --> 
 Success | code : 200  
 ```json
 {
@@ -240,11 +269,13 @@ Failure Response | code : 500
     "message": "User didn't exist!"
 }
 ```
-## POST /api/trainers/create (apply to be trainer)  
-apply to be trainer  
+# Trainer
+
+## POST /api/trainers/create (Apply to be trainer)  
+User can apply to be trainer  
   
 (authentication is required)
-### Request Body  
+### Request Body<!-- omit in toc -->  
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | name | Required | string | trainer name |
@@ -253,7 +284,7 @@ apply to be trainer
 | duringTime | Required | string | can only fill in 30 or 60 |
 | location | Required | string | enter the actual teaching address |
 | appointment | Required | json | enter the time (week) when lessons are available. Use an array [1,2,3,4,5,6,0] to represent Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday(0) respectively. |
-### Response 
+### Response<!-- omit in toc --> 
 Success | code : 200  
 ```json
 {
@@ -313,15 +344,15 @@ Failure Response | code : 500
     "message": "Error: Appointment is wrong format."
 }
 ```
-## PUT /api/trainers/:trainerId (modify trainer information)  
-modify trainer's own information  
+## PUT /api/trainers/:trainerId (Modify trainer information)  
+Modify trainer's own information  
   
 (authentication is required)
-### Path Variables  
+### Path Variables<!-- omit in toc -->  
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | trainerId | Required | int | trainer id |
-### Request Body  
+### Request Body<!-- omit in toc -->  
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | name | | string | trainer name |
@@ -331,7 +362,7 @@ modify trainer's own information
 | location | | string | enter the actual teaching address |
 | appointment | | json | enter the time (week) when lessons are available. Use an array [1,2,3,4,5,6,0] to represent Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday(0) respectively. |
 | image | | file | trainer image |
-### Response 
+### Response<!-- omit in toc --> 
 Success | code : 200  
 ```json
 {
@@ -370,8 +401,8 @@ Failure Response | code : 500
     "message": "Error: Appointment is wrong format."
 }
 ```
-## GET /api/trainers/:trainerId (trainer info) 
-get the trainer's own information including:  
+## GET /api/trainers/:trainerId (Trainer info) 
+Get the trainer's own information including:  
 - trainer's basic information
 - all records about the trainer
 - records in future(7 days after today)
@@ -379,11 +410,11 @@ get the trainer's own information including:
 - average comment score  
   
 (authentication is required)
-### Path Variables  
+### Path Variables<!-- omit in toc -->  
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | trainerId | Required | int | trainer id |
-### Response 
+### Response<!-- omit in toc --> 
 Success | code : 200  
 ```json
 {
@@ -593,12 +624,13 @@ Failure Response | code : 500
     "message": "Error: Trainer didn't exist!"
 }
 ```
+# Record
 
-## POST /api/records (user make an appointment)  
-user make an appointment  
+## POST /api/records (User make an appointment)  
+User make an appointment  
   
 (authentication is required)  
-### Request Body  
+### Request Body<!-- omit in toc -->  
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | trainerId | Required | string | trainer's ID |
@@ -609,7 +641,7 @@ user make an appointment
     "appointment":"2024-5-21 20:00:00"
 }
 ```
-### Response 
+### Response<!-- omit in toc --> 
 Success | code : 200  
 ```json
 {
@@ -655,15 +687,15 @@ Failure Response | code : 500
     "message": "Error: This time slot has been reserved"
 }
 ```
-## DELETE /api/records/:recordId (cancel appointment)  
-user can cancel the appointment  
+## DELETE /api/records/:recordId (User cancel appointment)  
+User can cancel the appointment  
   
 (authentication is required)
-### Path Variables  
+### Path Variables<!-- omit in toc -->  
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | recordId | Required | int | record id |
-### Response 
+### Response<!-- omit in toc --> 
 Success | code : 200  
 ```json
 {
@@ -695,11 +727,14 @@ Failure Response | code : 500
     "message": "Error: Record didn't exist!"
 }
 ```
-## POST /api/comments (comment)  
-user can score and leave a comment about the trainer 
+
+# Comment
+  
+## POST /api/comments (Comment)  
+User can score and leave a comment about the trainer 
   
 (authentication is required)
-### Request Body  
+### Request Body<!-- omit in toc -->  
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | trainerId | Required | string | trainer's ID |
@@ -712,7 +747,7 @@ user can score and leave a comment about the trainer
     "text":"great!"
 }
 ```
-### Response 
+### Response<!-- omit in toc --> 
 Success | code : 200  
 ```json
 {
@@ -751,18 +786,21 @@ Failure Response | code : 500
     "message": "Error: Please fill in the score from 1 to 5 points"
 }
 ```
-## GET /api/lessons (user home page)
-user get home page (index page) including:
+
+# Lesson  
+  
+## GET /api/lessons (User home page)
+User get home page (index page) including:
 - listed all trainer info  
 - top 10 users lesson time ranking  
   
 (authentication is required)
-### Query Parameters
+### Query Parameters<!-- omit in toc -->
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | page |  | int | index page (default: 1) |
 | limit |  | int | number of trainer to show in home page (default: 8) |
-### Response 
+### Response<!-- omit in toc -->
 Success | code : 200  
 ```json
 {
@@ -929,19 +967,19 @@ Success | code : 200
     }
 }
 ```
-## GET /api/lessons/:trainerId (get available lesson and trainer info for user) 
-user can get the trainer information including:
+## GET /api/lessons/:trainerId (User gets available lesson and trainer info)
+User can get the trainer information including:
 - trainer info
 - available reservation time
 - top and lowest rated comments
 - average comment score  
   
 (authentication is required)
-### Path Variables  
+### Path Variables<!-- omit in toc -->  
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | trainerId | Required | int | trainer id |
-### Response 
+### Response<!-- omit in toc --> 
 Success | code : 200  
 ```json
 {
@@ -1036,17 +1074,17 @@ Failure Response | code : 500
     "message": "Error: Trainer didn't exist!"
 }
 ```
-## GET /api/lessons/search (search)
+## GET /api/lessons/search (Search)
 user can search trainer's information by keyword(search column: name, introduction, teaching style, location)
   
 (authentication is required)
-### Query Parameters
+### Query Parameters<!-- omit in toc -->
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | keyword | Required | string | search trainer's information by keyword |
 | page |  | int | index page (default: 1) |
 | limit |  | int | number of trainer to show in home page (default: 8) |
-### Response 
+### Response<!-- omit in toc --> 
 Success | code : 200  
 ```json
 {
@@ -1144,16 +1182,18 @@ Failure Response | code : 500
     "message": "Error: No keyword, redirect to home page"
 }
 ```
+
 # Admin
-## POST /api/admin/signin (admin signin)  
+  
+## POST /api/admin/signin (Admin signin)  
 Admin sign in.  
-### Request Body  
+### Request Body<!-- omit in toc -->  
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | email | Required | string | Admin email |
 | password | Required | string | Admin password |  
 
-### Response 
+### Response<!-- omit in toc --> 
 Success | code : 200  
 ```json
 {
@@ -1177,16 +1217,16 @@ Failure Response | code : 500
     "message": "Error: Email or password wrong!"
 }
 ```
-## GET /api/admin (admin get all users)
+## GET /api/admin (Admin get all users)
 Admin can get all users' info.  
   
 (authentication is required)
-### Query Parameters
+### Query Parameters<!-- omit in toc -->
 | Params | Required | Type | Description |
 | --- | --- | --- | --- |
 | page |  | int | index page (default: 1) |
 | limit |  | int | number of trainer to show in home page (default: 3) |
-### Response 
+### Response<!-- omit in toc --> 
 Success | code : 200  
 ```json
 {
