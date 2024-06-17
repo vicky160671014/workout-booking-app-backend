@@ -26,7 +26,60 @@
 
 
 # ERD (Entity Relationship Diagram)
-ERD (Entity Relationship Diagram)
+  
+```mermaid
+erDiagram
+    USER {
+        INTEGER id PK
+        STRING name
+        STRING email
+        STRING password
+        STRING image
+        TEXT introduction
+    }
+    
+    TRAINER {
+        INTEGER id PK
+        STRING name
+        STRING image
+        TEXT introduction
+        TEXT teachingStyle
+        STRING duringTime
+        STRING location
+        JSON appointment
+        INTEGER userId FK
+    }
+    
+    RECORD {
+        INTEGER id PK
+        STRING startTime
+        STRING duringTime
+        INTEGER userId FK
+        INTEGER trainerId FK
+    }
+    
+    COMMENT {
+        INTEGER id PK
+        FLOAT scores
+        TEXT text
+        INTEGER userId FK
+        INTEGER trainerId FK
+    }
+    
+    ADMIN {
+        INTEGER id PK
+        STRING name
+        STRING email
+        STRING password
+    }
+    
+    USER ||--o| TRAINER : "has one"
+    USER ||--o{ RECORD : "has many"
+    USER ||--o{ COMMENT : "has many"
+    TRAINER ||--o{ RECORD : "has many"
+    TRAINER ||--o{ COMMENT : "has many"
+```
+
 # User  
 
 ## POST /api/signup (User signup)  
