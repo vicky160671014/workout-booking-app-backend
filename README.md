@@ -7,7 +7,7 @@
 - 此應用程式為健身個別課預約系統，多位教練可於系統開課，使用者可透過系統挑選教練並預約時段，給予評分與評論  
 
 <div align="center">
-<img width="80%" alt="Application Diagram" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/application_diagram.jpg"/>
+<img width="60%" alt="Application Diagram" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/application_diagram.jpg"/>
 </div>
 
 ### 1-2.Database Schema
@@ -77,7 +77,7 @@ erDiagram
 使用Nginx作為反向代理，提供隱藏server真實IP、負載平衡、應用層防火牆等作用。  
 
 <div align="center">
-<img width="80%" alt="Layer 7 Reverse Proxy" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/Layer7ReverseProxy.jpg"/>
+<img width="60%" alt="Layer 7 Reverse Proxy" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/Layer7ReverseProxy.jpg"/>
 </div>
 
 - Layer 7 load balancer
