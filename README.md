@@ -4,7 +4,12 @@
 
 ## 1. 現行應用程式介紹
 ### 1-1.現行架構
-- 此應用程式為健身個別課預約系統，多位教練可於系統開課，使用者可透過系統挑選教練並預約時段，給予評分與評論
+- 此應用程式為健身個別課預約系統，多位教練可於系統開課，使用者可透過系統挑選教練並預約時段，給予評分與評論  
+
+<div align="center">
+<img width="80%" alt="Application Diagram" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/application_diagram.jpg"/>
+</div>
+
 ### 1-2.Database Schema
 ```mermaid
 erDiagram
@@ -69,7 +74,12 @@ erDiagram
 ### 3-1. 使用傳輸效能較佳的通訊協定 HTTP/2
 - 相較於HTTP/1.1至多使用六個 TCP 連線，每個連線一次只能傳送一個回應 (response queuing)；HTTP/2改善訊息編碼方式(Binary framing layer)，並用單一TCP連線多工處理(multiplexing)，是此通訊協定提供的所有其他功能以及效能最佳化的基礎
 ### 3-2. Using Nginx as Layer 7 Reverse Proxy
-使用Nginx作為反向代理，提供隱藏server真實IP、負載平衡、應用層防火牆等作用。
+使用Nginx作為反向代理，提供隱藏server真實IP、負載平衡、應用層防火牆等作用。  
+
+<div align="center">
+<img width="80%" alt="Layer 7 Reverse Proxy" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/Layer7ReverseProxy.jpg"/>
+</div>
+
 - Layer 7 load balancer
 解析packet中資料內容，依照request為GET或POST、PUT、DELETE請求，分流至相應處理的server，減輕流量壓力
 
