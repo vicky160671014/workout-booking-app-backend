@@ -1,4 +1,4 @@
-# Workout Booking App 改良方案
+# Workout Booking App - Improvement Plan  
 
 ## Table of contents
 
@@ -80,11 +80,163 @@ erDiagram
 <img width="60%" alt="Layer 7 Reverse Proxy" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/Layer7ReverseProxy.jpg"/>
 </div>
 
-- Layer 7 load balancer
+- Layer 7 load balancer  
 解析packet中資料內容，依照request為GET或POST、PUT、DELETE請求，分流至相應處理的server，減輕流量壓力
 
-- TLS Termination Proxy
+- TLS Termination Proxy  
 流量來自於各種不同國家(不同位址)的Client端，故於Client端至Reverse Proxy端採用TLS 1.3，而Reverse Proxy端至後端server內網通訊採用http。此設計可提供入侵檢測(Intrusion Detection System)偵測DDoS攻擊、減輕Reverse Proxy端至後方server端加密解密負擔，增加通訊效率
 
-- Transport Layer Security 1.3
-相較於TLS1.2(使用對稱加密)，TLS 1.3使用Diffie–Hellman金鑰交換，為非對稱加密(asymmetric encryption)，並簡化通訊流程，增加安全性以及提升傳輸效率
+- Transport Layer Security 1.3  
+相較於TLS1.2(使用對稱加密)，TLS 1.3使用Diffie–Hellman金鑰交換，為非對稱加密(asymmetric encryption)，並簡化通訊流程，增加安全性以及提升傳輸效率  
+
+### 3-3. Query設定索引Index  
+- MySQL InnoDB預設使用clustered Index，以B+ tree作為實際資料儲存結構，對Primary key做索引，並將整個row儲存於leaf nodes；自行建立的索引為secondary Index，leaf nodes僅存有對應Primary key  
+- 依據需求特性，高頻率query的功能與索引方案如下:  
+  - **(1) function getLessons**:  
+  ```javascript
+  getLessons: async (req, cb) => {
+    try {
+      const today = timeTool.currentTaipeiTime()
+      const DEFAULT_LIMIT = 8
+      const page = Number(req.query.page) || 1
+      const limit = Number(req.query.limit) || DEFAULT_LIMIT
+      const offset = getOffset(limit, page)
+
+      const [findTrainers, findUserRecord] = await Promise.all([
+        Trainer.findAndCountAll({
+          limit,
+          offset,
+          raw: true
+        }),
+        Record.findAll({
+          where: { startTime: { [Op.lt]: today } },
+          include: [{ model: User, attributes: ['name', 'image'] }],
+          attributes: [
+            'user_id',
+            [Sequelize.fn('sum', Sequelize.col('during_time')), 'totalTime']
+          ],
+          group: ['user_id'],
+          order: [
+            [Sequelize.fn('sum', Sequelize.col('during_time')), 'DESC']
+          ],
+          limit: 10,
+          raw: true
+        })
+      ])
+
+      const trainers = findTrainers.rows.map(t => ({
+        ...t,
+        introduction: t.introduction && t.introduction.length ? `${t.introduction.substring(0, 50)}...` : '',
+        teachingStyle: t.teachingStyle && t.teachingStyle.length ? `${t.teachingStyle.substring(0, 50)}...` : ''
+      }))
+
+      const userRecordRank = rankTool.addRankIndex(findUserRecord)
+
+      cb(null, { trainers, userRecordRank, pagination: getPagination(limit, page, findTrainers.count) })
+    } catch (error) {
+      cb(error)
+    }
+  }
+  ```
+  此功能需要取得過去時間所有預約紀錄，做分組統計並排序，故欲取得資料量占整體比例高，故設立索引效用不大。索引適用於需要在大量資料中，取得特定條件的少量資料。  
+  
+
+  - **(2) function getLesson**:  
+  ```javascript
+  getLesson: async (req, cb) => {
+    try {
+      const { trainerId } = req.params
+      const todayAddOne = dayjs(timeTool.currentTaipeiTime()).add(1, 'day').format('YYYY-MM-DD')
+      const [trainer, findRecord, allComments, avgCommentScore] = await Promise.all([
+        Trainer.findByPk(trainerId, { raw: true }),
+        Record.findAll({
+          where: {
+            trainerId,
+            startTime: { [Op.gte]: todayAddOne }
+          },
+          raw: true
+        }) || [],
+        Comment.findAll({
+          where: { trainerId },
+          order: [['scores', 'DESC']],
+          raw: true
+        }),
+        Comment.findOne({
+          where: { trainerId },
+          attributes: [
+            [Sequelize.fn('AVG', Sequelize.col('scores')), 'avgScores']
+          ],
+          raw: true
+        })
+      ])
+
+      if (!trainer) throw new Error("Trainer didn't exist!")
+
+      // 計算目前此教練可以被預約的時間
+      const bookedRecord = findRecord.map(r => r.startTime)
+      if (typeof (trainer.appointment) !== 'object') {
+        const newArray = []
+        newArray.push(trainer.appointment)
+        trainer.appointment = newArray
+      }
+      trainer.availableReserveTime = timeTool.availableReserve(trainer.appointment, bookedRecord, trainer.duringTime)
+      // 最佳評論、最差評論、平均分數
+      avgCommentScore.avgScores = parseFloat(avgCommentScore.avgScores).toFixed(1)
+      const highComment = allComments[0]
+      const lowComment = allComments.length > 1 ? allComments[allComments.length - 1] : null
+
+      cb(null, { trainer, highComment, lowComment, avgCommentScore })
+    } catch (error) {
+      cb(error)
+    }
+  }
+  ```
+  此功能主要為計算每位教練的可預約時段，故關鍵的資料為教練開課星期(Table Trainer-appointment)、課程長度(Table Trainer - duringTime)、已經預約的時段(Table Record - startTime)，以及提供教練的評價資訊(Table Comment- scores、text)。  
+
+  | 所需資料 | 索引策略 | 搜尋運行流程 |
+  | --- | --- | --- |
+  | 教練開課星期(Table Trainer-appointment)、課程長度(Table Trainer - duringTime) | 不另設索引 | 運用原mysql所建立之clustered Index即可找到資料 |
+  | 教練已經預約的時段(Table Record - startTime) | Table Record設立Compound index(trainer_id, startTime)；startTime改為使用資料庫內建日期時間資料型態，避免使用字串| 此連合索引會以左側trainer_id建立，將startTime欄位與原資料PK儲存於leaf nodes。故可直接於該索引，運用trainer_id取得startTime資料(不用回到clustered Index取得full row)，再於應用程式面處理startTime排序與取得未來日期 |
+  | 教練的評價資訊(Table Comment- scores、text) | Table Comment設立Covering index(trainer_id) | 先至trainer_id的secondary index搜尋，再至clustered Index取得full row |  
+
+  - **(3) function postAppointment**:
+  ```javascript
+  postAppointment: async (req, cb) => {
+    const userId = req.user.id
+    const { trainerId, appointment } = req.body
+    const startTime = timeTool.appointmentFormat(appointment)
+    try {
+      if (!trainerId || !appointment) throw new Error('All fields are required')
+
+      const [trainer, userRecord, trainerRecord] = await Promise.all([
+        Trainer.findByPk(trainerId, { raw: true }),
+        Record.findAll({ where: { userId }, raw: true }),
+        Record.findAll({ where: { trainerId }, raw: true })
+      ])
+      // 前端資料驗證
+      if (!trainer) throw new Error("Trainer didn't exist!")
+      if (parseInt(trainer.userId) === parseInt(userId)) throw new Error("Unable to book a trainer's own lesson")
+      if (!timeTool.startTimeAvailable(startTime, trainer.appointment)) throw new Error('Not open during this week day')
+      // 確認此預約是否與trainer的其他user預約重複(同trainer)
+      if (timeTool.bookedCheck(startTime, trainerRecord)) throw new Error('This time slot has been reserved')
+      // 確認此預約是否與user自己的其他預約重複(同user)
+      if (timeTool.userOverlappingCheck(startTime, trainer.duringTime, userRecord)) throw new Error('User appointments overlap')
+
+      // 創建新預約
+      const newRecord = await Record.create({
+        startTime,
+        duringTime: trainer.duringTime,
+        userId,
+        trainerId: trainer.id
+      })
+      cb(null, { record: newRecord })
+    } catch (error) {
+      cb(error)
+    }
+    }
+  ```
+  此功能為新增預約，需要使用者與教練目前的預約紀錄檢核是否有預約衝突，故所需要的關鍵資料為教練開課星期(Table Trainer - appointment)、課程長度(Table Trainer - duringTime)、教練及使用者已預約資訊(Table Record - startTime、duringTime)，故新增索引:  
+
+  | 所需資料 | 索引策略 | 搜尋運行流程 |
+  | --- | --- | --- |
+  | 使用者已預約資訊(Table Record - startTime、duringTime) | Table Record設立Covering index(user_id) | 先至user_id的secondary index搜尋，再至clustered Index取得full row |  
