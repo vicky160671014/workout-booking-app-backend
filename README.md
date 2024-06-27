@@ -240,3 +240,20 @@ erDiagram
   | 所需資料 | 索引策略 | 搜尋運行流程 |
   | --- | --- | --- |
   | 使用者已預約資訊(Table Record - startTime、duringTime) | Table Record設立Covering index(user_id) | 先至user_id的secondary index搜尋，再至clustered Index取得full row |  
+
+### 3-4. DB-Horizontal partitioning (in the same database)  
+- Table Record、Table Comment不適合使用資料表水平切分，因搜尋資料時會經常使用user_id與trainer_id兩個欄位為條件，若使用兩者其中一個欄位進行水平切分，將會使符合另一個欄位條件的資料分散於多個不同分區(partition)  
+- Table User適合使用user_id進行資料水平切分；Table Trainer適合使用trainer_id進行資料水平切分  
+  
+<div align="center">
+<img width="60%" alt="Horizontal Partitioning" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/Horizontal_partitioning.jpg"/>
+</div>
+  
+### 3-5. DB-Master-Standby Replication  
+- 使用兩個MySQL instance，一個instance做為Master database server進行資料寫入(W)，另一個instance進行Replication作為Standby database server僅進行資料讀取(R)  
+- 使用synchronous replication，確保Master與Standby database裡資料的一致性，但會影響資料寫入速度  
+  
+<div align="center">
+<img width="60%" alt="Master-Standby Replication" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/Master-Standby_Replication.jpg"/>
+</div>
+  
