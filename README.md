@@ -257,3 +257,11 @@ erDiagram
 <img width="60%" alt="Master-Standby Replication" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/Master-Standby_Replication.jpg"/>
 </div>
   
+### 3-6. Using Redis as Cache  
+- Redis會將所有資料存放於記憶體(In-Memory Database)，單線程架構(single thread)，資料儲存方式為key-value，讀寫速度快，適合做為緩存服務  
+- 適合緩存的資料應符合「**高頻率使用**」以及「**不常被更新**」，故此專案中，Table User與Table Trainer資料適合緩存。原因如下述，此應用程式為Stateless Application，使用token做為用戶驗證機制，每一個request都會需要至資料庫讀取Table User，且會員資料(user)正常情況不會頻繁更新；Table Trainer資料內容為教練的個人簡介、開課資訊等，初期擬訂後不會頻繁更動，且此應用程式首頁、預約頁面皆會頻繁使用教練資料(trainer)  
+- 為維持資料庫與緩存資料一致性，將使用**Cache Aside緩存策略**。資料異動時，先寫入Master database後，資料複製到Standby database，再刪除Redis緩存，當讀取cache miss，再到資料庫讀取並重新建立緩存、設定key的EXPIRE  
+  
+<div align="center">
+<img width="60%" alt="Master-Standby Replication" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/Redis_as_Cache.jpg"/>
+</div>
