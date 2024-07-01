@@ -265,3 +265,9 @@ erDiagram
 <div align="center">
 <img width="60%" alt="Master-Standby Replication" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/Redis_as_Cache.jpg"/>
 </div>
+  
+### 3-7. Sharding (multiple database servers)  
+- Sharding利於水平擴展，但將會使維持關聯式資料庫中的ACID變得非常複雜，包含多個server需要處理寫入衝突、Join處理、Rollback等，必須謹慎思考其必要性，應為最後選項。  
+- 其他優先解決方案傾向於單庫操作、一庫寫多庫讀(通常為讀取需求大)；若是寫入需求真的很大，考慮兩個資料庫寫入(Master-Master Replication)，但兩個寫入資料庫架設於不同地理分區(例如美東與美西)，減少寫入衝突。  
+  
+## 4. 優化layer 7之方案
