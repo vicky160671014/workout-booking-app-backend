@@ -342,7 +342,7 @@ describe('getLesson', () => {
 - Codiumate會以主題及重要性羅列多項程式碼優化建議以及原因  
   
 <div align="center">
-<img width="60%" alt="Codiumate improve" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/Codiumate_improve.jpg"/>
+<img width="80%" alt="Codiumate improve" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/Codiumate_improve.jpg"/>
 </div>
   
 - 再使用對話的方式，獲取更精確的資訊  
