@@ -1,16 +1,35 @@
-# Workout Booking App - Improvement Plan  
-
-## Table of contents
-
+# Workout Booking App - Improvement Plan<!-- omit in toc -->  
+為Side-Project的未來著想  
+  
+## Table of contents<!-- omit in toc -->
+- [1. 現行應用程式介紹](#1-現行應用程式介紹)
+  - [1-1. 現行架構](#1-1-現行架構)
+  - [1-2. Database Schema](#1-2-database-schema)
+  - [1-3. 為何使用關聯式資料庫?](#1-3-為何使用關聯式資料庫)
+- [2. 預設瞬間有高流量(類似高鐵搶票系統、活動促銷期間預約系統)，嘗試思考架構如何配置、資料庫優化](#2-預設瞬間有高流量類似高鐵搶票系統活動促銷期間預約系統嘗試思考架構如何配置資料庫優化)
+  - [2-1. 需求特性描述](#2-1-需求特性描述)
+- [3. 優化整體架構之方案](#3-優化整體架構之方案)
+  - [3-1. 使用傳輸效能較佳的通訊協定 HTTP/2](#3-1-使用傳輸效能較佳的通訊協定-http2)
+  - [3-2. Using Nginx as Layer 7 Reverse Proxy](#3-2-using-nginx-as-layer-7-reverse-proxy)
+  - [3-3. Query設定索引Index](#3-3-query設定索引index)
+  - [3-4. DB-Horizontal partitioning (in the same database)](#3-4-db-horizontal-partitioning-in-the-same-database)
+  - [3-5. DB-Master-Standby Replication](#3-5-db-master-standby-replication)
+  - [3-6. Using Redis as Cache](#3-6-using-redis-as-cache)
+  - [3-7. DB-Sharding (multiple database servers)](#3-7-db-sharding-multiple-database-servers)
+- [4. 優化layer 7之方案 (Using Codiumate-Generate tests、Get improvement suggestions)](#4-優化layer-7之方案-using-codiumate-generate-testsget-improvement-suggestions)
+  - [4-1. 使用Test Double進行測試](#4-1-使用test-double進行測試)
+  - [4-2. 使用Codiumate逐步優化程式碼片段，以下簡述作法](#4-2-使用codiumate逐步優化程式碼片段以下簡述作法)
+  
+***
 ## 1. 現行應用程式介紹
-### 1-1.現行架構
+### 1-1. 現行架構
 - 此應用程式為健身個別課預約系統，多位教練可於系統開課，使用者可透過系統挑選教練並預約時段，給予評分與評論  
 
 <div align="center">
 <img width="60%" alt="Application Diagram" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/application_diagram.jpg"/>
 </div>
 
-### 1-2.Database Schema
+### 1-2. Database Schema
 ```mermaid
 erDiagram
     USER {
@@ -63,11 +82,11 @@ erDiagram
     TRAINER ||--o{ RECORD : "has many"
     TRAINER ||--o{ COMMENT : "has many"
 ```
-### 1-3.為何使用關聯式資料庫?
+### 1-3. 為何使用關聯式資料庫?
 - 預約系統對於讀取有強一致性的需求(Consistency in reads)，更新操作執行成功後，所有的使用者都應該讀取到最新的值，避免重複預約或預約未果
   
-## 2. 預設瞬間有高流量(類似高鐵搶票系統、活動促銷期間預約系統)，嘗試思考架構要如何配置、資料庫優化
-### 2-1.需求特性描述
+## 2. 預設瞬間有高流量(類似高鐵搶票系統、活動促銷期間預約系統)，嘗試思考架構如何配置、資料庫優化
+### 2-1. 需求特性描述
 - 預期使用者在預約過程中，會頻繁讀取教練可預約的時段(getLesson function)以及寫入預約(postAppointment function)
 
 ## 3. 優化整體架構之方案
@@ -266,7 +285,7 @@ erDiagram
 <img width="60%" alt="Master-Standby Replication" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/Redis_as_Cache.jpg"/>
 </div>
   
-### 3-7. Sharding (multiple database servers)  
+### 3-7. DB-Sharding (multiple database servers)  
 - Sharding利於水平擴展，但將會使維持關聯式資料庫中的ACID變得非常複雜，包含多個server需要處理寫入衝突、Join處理、Rollback等，必須謹慎思考其必要性，應為最後選項。  
 - 其他優先解決方案傾向於單庫操作、一庫寫多庫讀(通常為讀取需求大)；若是寫入需求真的很大，考慮兩個資料庫寫入(Master-Master Replication)，但兩個寫入資料庫架設於不同地理分區(例如美東與美西)，減少寫入衝突。  
   
