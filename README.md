@@ -270,4 +270,52 @@ erDiagram
 - Sharding利於水平擴展，但將會使維持關聯式資料庫中的ACID變得非常複雜，包含多個server需要處理寫入衝突、Join處理、Rollback等，必須謹慎思考其必要性，應為最後選項。  
 - 其他優先解決方案傾向於單庫操作、一庫寫多庫讀(通常為讀取需求大)；若是寫入需求真的很大，考慮兩個資料庫寫入(Master-Master Replication)，但兩個寫入資料庫架設於不同地理分區(例如美東與美西)，減少寫入衝突。  
   
-## 4. 優化layer 7之方案
+## 4. 優化layer 7之方案 (Using Codiumate-Generate tests、Get improvement suggestions)  
+### 4-1. 使用Test Double進行測試  
+- 單元測試必須與外部環境、資源、服務獨立，而不能直接相依，故以下針對getLesson所撰寫的測試需使用Test Double(測試替身)，以套件sinon實踐  
+- Spy、Stub  
+與**外界連動**的部分使用`Stub`取代目標函式，將與資料庫相關的部分替換成回傳Promise，將引入其他套件(timeTool)部分替換成呼叫callback function且送入指定參數；使用`Spy`真實執行被測試的函式，並對該函式蒐集資訊並驗證
+- 此應用程式預約檢驗的邏輯其實是撰寫於timeTool，所以需要為其撰寫單元測試，詳見`tests/ timeTool-AIgen.test.js`
+  
+```javascript
+describe('getLesson', () => {
+  // Successfully retrieves trainer details by trainerId
+  it('should retrieve trainer details when given a valid trainerId', async () => {
+    const req = { params: { trainerId: 1 } }
+    const cb = sinon.spy()
+
+    const trainerMock = { id: 1, name: 'John Doe', appointment: [], duringTime: 60 }
+    const recordMock = [{ startTime: '2023-10-10T10:00:00' }]
+    const commentMock = [{ scores: 5 }]
+    const avgScoreMock = { avgScores: '4.5' }
+
+    sinon.stub(Trainer, 'findByPk').resolves(trainerMock)
+    sinon.stub(Record, 'findAll').resolves(recordMock)
+    sinon.stub(Comment, 'findAll').resolves(commentMock)
+    sinon.stub(Comment, 'findOne').resolves(avgScoreMock)
+    sinon.stub(timeTool, 'currentTaipeiTime').returns(new Date())
+    sinon.stub(timeTool, 'availableReserve').returns(['2023-10-11T10:00:00'])
+
+    await getLesson(req, cb)
+
+    expect(cb.calledOnce).to.be.true
+    expect(cb.firstCall.args[0]).to.be.null
+    expect(cb.firstCall.args[1]).to.deep.equal({
+      trainer: {
+        ...trainerMock,
+        availableReserveTime: ['2023-10-11T10:00:00']
+      },
+      highComment: commentMock[0],
+      lowComment: null,
+      avgCommentScore: avgScoreMock
+    })
+
+    Trainer.findByPk.restore()
+    Record.findAll.restore()
+    Comment.findAll.restore()
+    Comment.findOne.restore()
+    timeTool.currentTaipeiTime.restore()
+    timeTool.availableReserve.restore()
+  })
+})
+```
