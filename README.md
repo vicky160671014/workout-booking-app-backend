@@ -319,3 +319,16 @@ describe('getLesson', () => {
   })
 })
 ```
+### 4-2. 使用Codiumate逐步優化程式碼片段，以下簡述作法  
+- Codiumate會以主題及重要性羅列多項程式碼優化建議以及原因  
+  
+<div align="center">
+<img width="60%" alt="Codiumate improve" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/Codiumate_improve.jpg"/>
+</div>
+  
+- 再使用對話的方式，獲取更精確的資訊  
+  
+<div align="center">
+<img width="60%" alt="Codiumate ask" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/Codiumate_ask.jpg"/>
+</div>
+  
