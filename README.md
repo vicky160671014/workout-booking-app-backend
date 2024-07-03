@@ -23,8 +23,9 @@
 ***
 ## 1. 現行應用程式介紹
 ### 1-1. 現行架構
-- 此應用程式為健身個別課預約系統，多位教練可於系統開課，使用者可透過系統挑選教練並預約時段，給予評分與評論  
-
+- 此應用程式為健身個別課預約系統，多位教練可於平台開課，使用者可透過平台挑選教練並預約時段，給予評分與評論  
+- 此API Server涵蓋技術為後端基礎Node.js、Git、GitHub、Express、Relational Database、Restful API、Unit Test (mocha、chai、sinon、supertest)、API Document  
+  
 <div align="center">
 <img width="60%" alt="Application Diagram" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/application_diagram.jpg"/>
 </div>
@@ -103,7 +104,7 @@ erDiagram
 解析packet中資料內容，依照request為GET或POST、PUT、DELETE請求，分流至相應處理的server，減輕流量壓力
 
 - TLS Termination Proxy  
-流量來自於各種不同國家(不同位址)的Client端，故於Client端至Reverse Proxy端採用TLS 1.3，而Reverse Proxy端至後端server內網通訊採用http。此設計可提供入侵檢測(Intrusion Detection System)偵測DDoS攻擊、減輕Reverse Proxy端至後方server端加密解密負擔，增加通訊效率
+流量來自於各種不同國家(不同位址)的Client端，故於Client端至Reverse Proxy端採用TLS 1.3，而Reverse Proxy端至後端server內網通訊採用http 2。此設計可提供入侵檢測(Intrusion Detection System)偵測DDoS攻擊、減輕Reverse Proxy端至後方server端加密解密負擔，增加通訊效率
 
 - Transport Layer Security 1.3  
 相較於TLS1.2(使用對稱加密)，TLS 1.3使用Diffie–Hellman金鑰交換，為非對稱加密(asymmetric encryption)，並簡化通訊流程，增加安全性以及提升傳輸效率  
@@ -157,7 +158,7 @@ erDiagram
     }
   }
   ```
-  此功能需要取得過去時間所有預約紀錄，做分組統計並排序，故欲取得資料量占整體比例高，故設立索引效用不大。索引適用於需要在大量資料中，取得特定條件的少量資料。  
+  此功能需要取得過去時間所有預約紀錄，做分組統計並排序，故**欲取得資料量占整體比例高**，故設立索引效用不大。**索引適用於需要在大量資料中，取得特定條件的少量資料**。  
   
 
   - **(2) function getLesson**:  
@@ -215,7 +216,7 @@ erDiagram
   | 所需資料 | 索引策略 | 搜尋運行流程 |
   | --- | --- | --- |
   | 教練開課星期(Table Trainer-appointment)、課程長度(Table Trainer - duringTime) | 不另設索引 | 運用原mysql所建立之clustered Index即可找到資料 |
-  | 教練已經預約的時段(Table Record - startTime) | Table Record設立Compound index(trainer_id, startTime)；startTime改為使用資料庫內建日期時間資料型態，避免使用字串| 此連合索引會以左側trainer_id建立，將startTime欄位與原資料PK儲存於leaf nodes。故可直接於該索引，運用trainer_id取得startTime資料(不用回到clustered Index取得full row)，再於應用程式面處理startTime排序與取得未來日期 |
+  | 教練已經預約的時段(Table Record - startTime) | Table Record設立Compound index(trainer_id, startTime)；startTime改為使用資料庫內建日期時間資料型態，避免使用字串| 此Compound index會以左側trainer_id建立，將startTime欄位與原資料PK儲存於leaf nodes。故可直接於該索引，運用trainer_id取得startTime資料(不用回到clustered Index取得full row)，再於應用程式面處理startTime排序與取得未來日期 |
   | 教練的評價資訊(Table Comment- scores、text) | Table Comment設立Covering index(trainer_id) | 先至trainer_id的secondary index搜尋，再至clustered Index取得full row |  
 
   - **(3) function postAppointment**:
@@ -261,7 +262,7 @@ erDiagram
   | 使用者已預約資訊(Table Record - startTime、duringTime) | Table Record設立Covering index(user_id) | 先至user_id的secondary index搜尋，再至clustered Index取得full row |  
 
 ### 3-4. DB-Horizontal partitioning (in the same database)  
-- Table Record、Table Comment不適合使用資料表水平切分，因搜尋資料時會經常使用user_id與trainer_id兩個欄位為條件，若使用兩者其中一個欄位進行水平切分，將會使符合另一個欄位條件的資料分散於多個不同分區(partition)  
+- Table Record、Table Comment**不適合**使用資料表水平切分，因搜尋資料時會經常使用user_id與trainer_id兩個欄位為條件，若使用兩者其中一個欄位進行水平切分，將會使符合另一個欄位條件的資料分散於多個不同分區(partition)  
 - Table User適合使用user_id進行資料水平切分；Table Trainer適合使用trainer_id進行資料水平切分  
   
 <div align="center">
@@ -287,14 +288,14 @@ erDiagram
   
 ### 3-7. DB-Sharding (multiple database servers)  
 - Sharding利於水平擴展，但將會使維持關聯式資料庫中的ACID變得非常複雜，包含多個server需要處理寫入衝突、Join處理、Rollback等，必須謹慎思考其必要性，應為最後選項。  
-- 其他優先解決方案傾向於單庫操作、一庫寫多庫讀(通常為讀取需求大)；若是寫入需求真的很大，考慮兩個資料庫寫入(Master-Master Replication)，但兩個寫入資料庫架設於不同地理分區(例如美東與美西)，減少寫入衝突。  
+- 其他優先解決方案傾向於單庫操作、一庫寫多庫讀(通常為讀取需求大)；若是寫入需求真的很大，考慮兩個資料庫皆可寫入(Master-Master Replication)，但兩個資料庫分流處理不同地理分區(例如美東與美西)的寫入需求，運用處理業務本身的地緣特性，減少寫入衝突發生的機率。  
   
 ## 4. 優化layer 7之方案 (Using Codiumate-Generate tests、Get improvement suggestions)  
 ### 4-1. 使用Test Double進行測試  
-- 單元測試必須與外部環境、資源、服務獨立，而不能直接相依，故以下針對getLesson所撰寫的測試需使用Test Double(測試替身)，以套件sinon實踐  
+- 單元測試必須與外部環境、資源、服務獨立，不能直接相依；故以下針對getLesson所撰寫的測試需使用Test Double(測試替身)，以套件sinon實踐  
 - Spy、Stub  
-與**外界連動**的部分使用`Stub`取代目標函式，將與資料庫相關的部分替換成回傳Promise，將引入其他套件(timeTool)部分替換成呼叫callback function且送入指定參數；使用`Spy`真實執行被測試的函式，並對該函式蒐集資訊並驗證
-- 此應用程式預約檢驗的邏輯其實是撰寫於timeTool，所以需要為其撰寫單元測試，詳見`tests/ timeTool-AIgen.test.js`
+與**外界連動**的部分使用`Stub`取代目標函式，將與資料庫CRUD互動的部分替換成回傳Promise，將引入其他套件(timeTool)部分替換成呼叫callback function且送入指定參數；使用`Spy`真實執行被測試的函式，並對該函式蒐集資訊並驗證
+- 此應用程式課程預約檢核的邏輯其實是撰寫於timeTool，所以需要為其撰寫單元測試，詳見`tests/ timeTool-AIgen.test.js`  
   
 ```javascript
 describe('getLesson', () => {
