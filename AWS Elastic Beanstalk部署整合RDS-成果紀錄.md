@@ -19,90 +19,90 @@
 - 成功取得登入token及使用者資訊  
 
 <div align="center">
-<img width="80%" alt="deploy-POST-signin" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-POST-signin.jpg"/>
+<img width="100%" alt="deploy-POST-signin" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-POST-signin.jpg"/>
 </div>
   
 <div align="center">
-<img width="80%" alt="deploy-POST-signin-log" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-POST-signin-log.jpg"/>
+<img width="100%" alt="deploy-POST-signin-log" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-POST-signin-log.jpg"/>
 </div>
   
 ## 2. GET /api/lessons (User home page)  
 - 使用token取得使用者首頁資料
   
 <div align="center">
-<img width="80%" alt="deploy-GET-lessons" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-GET-lessons.jpg"/>
+<img width="100%" alt="deploy-GET-lessons" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-GET-lessons.jpg"/>
 </div>
   
 <div align="center">
-<img width="80%" alt="deploy-GET-lessons-log" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-GET-lessons-log.jpg"/>
+<img width="100%" alt="deploy-GET-lessons-log" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-GET-lessons-log.jpg"/>
 </div>
   
 ## 3. POST /api/records (User make an appointment)  
 - 成功預約課程  
   
 <div align="center">
-<img width="80%" alt="deploy-POST-record" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-POST-record.jpg"/>
+<img width="100%" alt="deploy-POST-record" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-POST-record.jpg"/>
 </div>
   
 - 預約不符合教練開課時間，回報錯誤  
   
 <div align="center">
-<img width="80%" alt="deploy-POST-record-error-1" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-POST-record-error-1.jpg"/>
+<img width="100%" alt="deploy-POST-record-error-1" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-POST-record-error-1.jpg"/>
 </div>
   
 - 重複預約，回報錯誤  
   
 <div align="center">
-<img width="80%" alt="deploy-POST-record-error-2" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-POST-record-error-2.jpg"/>
+<img width="100%" alt="deploy-POST-record-error-2" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-POST-record-error-2.jpg"/>
 </div>
   
 ## 4. PUT /api/trainers/:trainerId (Modify trainer information)  
 - 修改教練個人開課資訊  
   
 <div align="center">
-<img width="80%" alt="deploy-PUT-trainer" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-PUT-trainer.jpg"/>
+<img width="100%" alt="deploy-PUT-trainer" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-PUT-trainer.jpg"/>
 </div>
   
 ## 5. DELETE /api/records/:recordId (User cancel appointment)  
 - 取消課程預約  
   
 <div align="center">
-<img width="80%" alt="deploy-DELETE-record" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-DELETE-record.jpg"/>
+<img width="100%" alt="deploy-DELETE-record" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-DELETE-record.jpg"/>
 </div>
   
 ## Postman驗證清單  
   
 <div align="center">
-<img width="80%" alt="deploy-all-postman-list" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-all-postman-list.jpg"/>
+<img width="100%" alt="deploy-all-postman-list" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/deploy-all-postman-list.jpg"/>
 </div>
   
 ## AWS Dashboard 資訊  
 - Elastic Beanstalk  
 
 <div align="center">
-<img width="80%" alt="AWS-EB" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/AWS-EB.jpg"/>
+<img width="100%" alt="AWS-EB" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/AWS-EB.jpg"/>
 </div>
 
 - 應用程式運行之EC2虛擬主機  
 
 <div align="center">
-<img width="80%" alt="AWS-EC2" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/AWS-EC2.jpg"/>
+<img width="100%" alt="AWS-EC2" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/AWS-EC2.jpg"/>
 </div>
 
 - 資料庫RDS  
 
 <div align="center">
-<img width="80%" alt="AWS-RDS" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/AWS-RDS.jpg"/>
+<img width="100%" alt="AWS-RDS" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/AWS-RDS.jpg"/>
 </div>
 
 - S3儲存槽(EB會從S3拉檔案部署)  
 
 <div align="center">
-<img width="80%" alt="AWS-S3" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/AWS-S3.jpg"/>
+<img width="100%" alt="AWS-S3" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/AWS-S3.jpg"/>
 </div>
 
 - 所在的VPC  
 
 <div align="center">
-<img width="80%" alt="AWS-VPC" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/AWS-VPC.jpg"/>
+<img width="100%" alt="AWS-VPC" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/AWS-VPC.jpg"/>
 </div>
