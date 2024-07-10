@@ -13,6 +13,7 @@
 - [5. DELETE /api/records/:recordId (User cancel appointment)](#5-delete-apirecordsrecordid-user-cancel-appointment)
 - [Postman驗證清單](#postman驗證清單)
 - [AWS Dashboard 資訊](#aws-dashboard-資訊)
+- [解決CORS問題](#解決cors問題)
 
   
 ## 1. POST /api/signin (User signin)  
@@ -106,3 +107,41 @@
 <div align="center">
 <img width="100%" alt="AWS-VPC" src="https://github.com/vicky160671014/workout-booking-app-backend/blob/main/public/img/AWS-VPC.jpg"/>
 </div>
+  
+## 解決CORS問題  
+- 使用express的cors middleware  
+  
+- 安裝
+```javascript
+$ npm install cors
+```
+  
+- 於專案中引入  
+  
+預設為全開放  
+```json
+{
+  "origin": "*",
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  "preflightContinue": false,
+  "optionsSuccessStatus": 204
+}
+```
+  
+可進一步設定
+```javascript
+const express = require('express')
+const cors = require('cors')
+const corsOptions = {
+  origin: [
+    'https://www.example.com',
+    'http://localhost:3001',
+  ],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}
+const app = express()
+
+app.use(cors(corsOptions))
+```
+  
