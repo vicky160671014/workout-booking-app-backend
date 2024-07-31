@@ -3,6 +3,7 @@ const LocalStrategy = require('passport-local')
 const passportJWT = require('passport-jwt')
 const bcrypt = require('bcryptjs')
 const { User, Admin } = require('../models')
+const CustomError = require('../helpers/httpError-helper')
 
 const JWTStrategy = passportJWT.Strategy
 const ExtractJWT = passportJWT.ExtractJwt
@@ -16,10 +17,10 @@ passport.use('localStrategyUser', new LocalStrategy({
 }, async (req, email, password, cb) => {
   try {
     const user = await User.findOne({ where: { email } })
-    if (!user) return cb(new Error('Have not registered'))
+    if (!user) return cb(new CustomError(401, 'Have not registered'))
 
     const isMatch = await bcrypt.compare(password, user.password)
-    if (!isMatch) return cb(new Error('Email or password wrong!'))
+    if (!isMatch) return cb(new CustomError(403, 'Email or password wrong!'))
 
     user.strategy = 'localStrategyUser'
 
@@ -37,10 +38,10 @@ passport.use('localStrategyAdmin', new LocalStrategy({
 }, async (req, email, password, cb) => {
   try {
     const user = await Admin.findOne({ where: { email } })
-    if (!user) return cb(new Error('Email or password wrong!'))
+    if (!user) return cb(new CustomError(403, 'Email or password wrong!'))
 
     const isMatch = await bcrypt.compare(password, user.password)
-    if (!isMatch) return cb(new Error('Email or password wrong!'))
+    if (!isMatch) return cb(new CustomError(403, 'Email or password wrong!'))
 
     user.strategy = 'localStrategyAdmin'
 

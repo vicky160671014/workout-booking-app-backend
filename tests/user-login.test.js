@@ -25,7 +25,7 @@ describe(`POST ${url}`, function() {
       })
   })
 
-  it('Wrong password: return error code 500', function(done) {
+  it('Wrong password: return error code 403', function(done) {
     api.post(url)
       .send({
         email: 'user1@example.com',
@@ -33,14 +33,14 @@ describe(`POST ${url}`, function() {
       })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(500)
+      .expect(403)
       .end(err => {
         if (err) return done(err)
         return done()
       })
   })
 
-  it('Wrong email: return error code 500', function(done) {
+  it('Wrong email: return error code 401', function(done) {
     api.post(url)
       .send({
         email: 'user123456@example.com',
@@ -48,7 +48,7 @@ describe(`POST ${url}`, function() {
       })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(500)
+      .expect(401)
       .end(err => {
         if (err) return done(err)
         return done()

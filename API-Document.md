@@ -109,14 +109,14 @@ Success | code : 200
     }
 }
 ```
-Failure Response | code : 500  
+Failure Response | code : 409  
 ```json
 {
     "status": "error",
     "message": "Error: Email already exists!"
 }
 ```
-Failure Response | code : 500  
+Failure Response | code : 400  
 ```json
 {
     "status": "error",
@@ -150,14 +150,14 @@ Success | code : 200
     }
 }
 ```
-Failure Response | code : 500  
+Failure Response | code : 403  
 ```json
 {
     "status": "error",
     "message": "Error: Email or password wrong!"
 }
 ```
-Failure Response | code : 500  
+Failure Response | code : 401  
 ```json
 {
     "status": "error",
@@ -269,7 +269,7 @@ Failure Response | code : 401
     "message": "unauthorized"
 }
 ```
-Failure Response | code : 500  
+Failure Response | code : 404  
 ```json
 {
     "status": "error",
@@ -301,21 +301,21 @@ Success | code : 200
     }
 }
 ```
-Failure Response | code : 500  
+Failure Response | code : 400  
 ```json
 {
     "status": "error",
     "message": "User name is required!"
 }
 ```
-Failure Response | code : 500  
+Failure Response | code : 403  
 ```json
 {
     "status": "error",
     "message": "Error, you can only modify your own information"
 }
 ```
-Failure Response | code : 500  
+Failure Response | code : 404  
 ```json
 {
     "status": "error",

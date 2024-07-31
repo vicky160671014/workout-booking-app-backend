@@ -1,6 +1,7 @@
 // Services 負責商業邏輯運算
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const CustomError = require('../helpers/httpError-helper')
 const db = require('../models')
 const { User, Trainer, Record, Comment } = db
 const { localFileHandler } = require('../helpers/file-helpers')
@@ -12,11 +13,11 @@ const userServices = {
   signUp: async (req, cb) => {
     try {
       const { name, email, password, confirmPassword } = req.body
-      if (!name || !email || !password || !confirmPassword) throw new Error('All fields are required')
-      if (password !== confirmPassword) throw new Error('Passwords do not match!')
+      if (!name || !email || !password || !confirmPassword) throw new CustomError(400, 'All fields are required')
+      if (password !== confirmPassword) throw new CustomError(400, 'Passwords do not match!')
 
       const user = await User.findOne({ where: { email } })
-      if (user) throw new Error('Email already exists!')
+      if (user) throw new CustomError(409, 'Email already exists!')
 
       const hash = await bcrypt.hash(password, 10)
 
@@ -78,7 +79,7 @@ const userServices = {
           raw: true
         })
       ])
-      if (!user) throw new Error("User didn't exist!")
+      if (!user) throw new CustomError(404, "User didn't exist!")
       delete user.password
 
       const commentedTrainer = findComments.map(c => c.trainerId)
@@ -109,10 +110,10 @@ const userServices = {
     const { name, introduction } = req.body
     const { file } = req
     try {
-      if (!name) throw new Error('User name is required!')
-      if (Number(userId) !== Number(req.params.userId)) throw new Error('Error, you can only modify your own information')
+      if (!name) throw new CustomError(400, 'User name is required!')
+      if (Number(userId) !== Number(req.params.userId)) throw new CustomError(403, 'Error, you can only modify your own information')
       const [user, filePath] = await Promise.all([User.findByPk(userId), localFileHandler(file)])
-      if (!user) throw new Error("User didn't exist!")
+      if (!user) throw new CustomError(404, "User didn't exist!")
 
       const updatedUser = user.update({
         name: name || user.name,
