@@ -13,6 +13,12 @@ const userController = {
   },
   putUser: (req, res, next) => {
     userServices.putUser(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+  },
+  addUserImageToS3: (req, res, next) => {
+    userServices.addUserImageToS3(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+  },
+  getUserImageURL: (req, res, next) => {
+    userServices.getUserImageURL(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
   }
 }
 

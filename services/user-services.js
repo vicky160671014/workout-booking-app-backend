@@ -5,6 +5,7 @@ const CustomError = require('../helpers/httpError-helper')
 const db = require('../models')
 const { User, Trainer, Record, Comment } = db
 const { localFileHandler } = require('../helpers/file-helpers')
+const s3 = require('../helpers/aws-s3-helper')
 const timeTool = require('../helpers/time-helpers')
 const rankTool = require('../helpers/rank-helper')
 const { Op, Sequelize } = require('sequelize')
@@ -124,7 +125,26 @@ const userServices = {
     } catch (error) {
       cb(error)
     }
-  }
+  },
+  addUserImageToS3: async (req, cb) => {
+    const userId = req.user.id
+    const { file } = req
+    try {
+      const user = await User.findByPk(userId, { raw: true })
+      if (user.image && file) await s3.deleteImageFromS3(user.image)
+
+      let s3key = null // 若無檔案，s3key = null，不會update到S3
+      if (file) s3key = await s3.uploadUserImage(user.email, file)
+
+      const updatedUser = await User.update({ image: s3key || user.image }, { where: { id: userId } })
+      if (!updatedUser) throw new CustomError(500, 'Update failed')
+
+      cb(null, { imageName: s3key })
+    } catch (error) {
+      cb(error)
+    }
+  },
+  getUserImageURL: async (req, cb) => {}
 }
 
 module.exports = userServices

@@ -10,12 +10,15 @@ const searchController = require('../controllers/search-controller')
 const { authenticated } = require('../middleware/auth')
 const { errorHandler } = require('../middleware/error-handler')
 const upload = require('../middleware/multer')
+const uploadToS3 = require('../middleware/multerForS3')
 
 router.use('/admin', admin)
 
 // user
 router.post('/signup', userController.signUp)
 router.post('/signin', passport.authenticate('localStrategyUser', { session: false }), userController.signIn)
+// router.get('/users/imageURL', authenticated, userController.getUserImageURL)
+router.put('/users/image', authenticated, uploadToS3.single('image'), userController.addUserImageToS3)
 router.get('/users/:userId', authenticated, userController.getUser)
 router.put('/users/:userId', authenticated, upload.single('image'), userController.putUser)
 
