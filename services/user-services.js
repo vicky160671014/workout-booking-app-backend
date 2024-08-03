@@ -144,7 +144,20 @@ const userServices = {
       cb(error)
     }
   },
-  getUserImageURL: async (req, cb) => {}
+  getUserImageURL: async (req, cb) => {
+    const userId = req.user.id
+    try {
+      const user = await User.findByPk(userId, { raw: true })
+      if (!user) throw new CustomError(404, "User didn't exist!")
+      delete user.password
+
+      if (user.image) user.image = await s3.getImageFromS3(user.image)
+
+      cb(null, { user })
+    } catch (error) {
+      cb(error)
+    }
+  }
 }
 
 module.exports = userServices

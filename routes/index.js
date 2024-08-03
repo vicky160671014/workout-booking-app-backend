@@ -17,7 +17,7 @@ router.use('/admin', admin)
 // user
 router.post('/signup', userController.signUp)
 router.post('/signin', passport.authenticate('localStrategyUser', { session: false }), userController.signIn)
-// router.get('/users/imageURL', authenticated, userController.getUserImageURL)
+router.get('/users/imageURL', authenticated, userController.getUserImageURL)
 router.put('/users/image', authenticated, uploadToS3.single('image'), userController.addUserImageToS3)
 router.get('/users/:userId', authenticated, userController.getUser)
 router.put('/users/:userId', authenticated, upload.single('image'), userController.putUser)

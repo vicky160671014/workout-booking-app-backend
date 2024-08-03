@@ -39,6 +39,7 @@ async function getImageFromS3 (imageName) {
   }
   const command = new GetObjectCommand(getObjectParams)
   const url = await getSignedUrl(s3, command, { expiresIn: 3600 })
+  // 將Presigned URL回傳前端，前端再透過此Presigned URL從S3取得物件
   return url
 }
 
